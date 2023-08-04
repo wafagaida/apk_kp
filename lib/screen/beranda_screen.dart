@@ -24,99 +24,56 @@ class _BerandaScreenState extends State<BerandaScreen> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Padding(
-      //     padding: EdgeInsets.symmetric(horizontal: 18),
-      //     child: Text("Beranda"),
-      //   ),
-      //   backgroundColor: const Color(0xFF0873A1),
-      //   elevation: 0,
-      // ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            BerandaWidget.header(
-              user: widget.user,
-              homeScaffoldState: widget.homeScaffold,
-            ),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: BerandaWidget.cardMenu(),
-            ),
-            const SizedBox(height: 25),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 35,
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+      body: Column(
+        children: [
+          BerandaWidget.header(
+            user: widget.user,
+            homeScaffoldState: widget.homeScaffold,
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: BerandaWidget.cardMenu(),
+          ),
+          const SizedBox(height: 20),
+          const Divider(thickness: 1),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 35,
+                    ),
+                    child: BerandaWidget.sectionTitle(
+                      "Pengumuman",
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 35),
+                  //   child: BerandaWidget.pengumumanCard(
+                  //     size,
+                  //     "https://picsum.photos/1080/690",
+                  //     "PPDB",
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35),
+                    child: BerandaWidget.pengumumanNews(
+                      size,
+                    ),
+                  ),
+                ],
               ),
-              child: BerandaWidget.sectionTitle(
-                "Pengumuman",
-              ),
             ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: BerandaWidget.pengumumanCard(
-                size,
-                "https://picsum.photos/1080/690",
-                "PPDB",
-              ),
-            ),
-            // Expanded(
-            //   child: SingleChildScrollView(
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [],
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
-
-// Padding(
-//   padding: const EdgeInsets.symmetric(horizontal: 35),
-//   child: Column(
-//     children: [
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Car",
-//           ),
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Bike",
-//           ),
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Food",
-//           ),
-//         ],
-//       ),
-//       const SizedBox(height: 15),
-//       Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: <Widget>[
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Rent",
-//           ),
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Gift Cards",
-//           ),
-//           BerandaWidget.menu(
-//             image: "assets/images/logoSMK.png",
-//             title: "Subscription",
-//           ),
-//         ],
-//       ),
-//     ],
-//   ),
-// ),

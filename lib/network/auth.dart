@@ -4,7 +4,10 @@ import 'package:lms/screen/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckAuth extends StatefulWidget{
+  const CheckAuth({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _CheckAuthState createState() => _CheckAuthState();
 }
 

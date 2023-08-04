@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../network/api.dart';
 
@@ -17,7 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   late GlobalKey<FormState> _formKey;
   late TextEditingController _userController;
   late TextEditingController _passController;
-
+  
+  bool isLoggedIn = false;
   bool _isLoading = false;
   bool isVisiblePassword = false;
 
@@ -182,6 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
                                     login();
                                   }
                                 },
@@ -218,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SnackBar(
       content: Text(message),
       backgroundColor: color,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -242,62 +245,18 @@ class _LoginScreenState extends State<LoginScreen> {
       GoRouter.of(context).goNamed('home');
     } else {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          _showMsg("Username atau Password Salah", Colors.red));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(_showMsg("Username atau Password Salah", Colors.red));
     }
 
     setState(() {
       _isLoading = false;
     });
   }
+
+  saveSession(String email) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString("email", email);
+    await pref.setBool("login", true);
+  }
 }
-
- // void login(String username, password) async {
-  //   try {
-  //     Response response = await post(Uri.parse('https://reqres.in/api/login'),
-  //         body: {'email': 'eve.holt@reqres.in', 'password': 'cityslicka'});
-
-  //     if (response.statusCode == 200) {
-  //       var data = jsonDecode(response.body.toString());
-  //       print(data['token']);
-  //       print('Login successfully');
-  //     } else {
-  //       print('failed');
-  //     }
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  // Future login() async {
-  //   var body = {
-  //     "username": _userController.text,
-  //     "password": _passController.text,
-  //   };
-  //   final data = await http.post(
-  //       Uri.parse("https://glass-faced-doubt.000webhostapp.com/api.php"),
-  //       body: body);
-  //   var dataUser = json.decode(data.body);
-
-  //   if (dataUser.length == 0) {
-  //     AlertDialog(
-  //       title: const Text('Pesan'),
-  //       content: const Text('Gagal Login'),
-  //       actions: <Widget>[
-  //         ElevatedButton(
-  //           child: const Icon(Icons.check),
-  //           // color: Colors.blue,
-  //           // textColor: Colors.white,
-  //           onPressed: () => Navigator.of(context).pop(),
-  //         )
-  //       ],
-  //     );
-  //   } else {
-  //     if (dataUser[0]["bagian"] == 'mahasiswa') {
-  //       // ignore: use_build_context_synchronously
-  //       Navigator.of(context).pushNamedAndRemoveUntil(
-  //           '/mahasiswa', (Route<dynamic> route) => false);
-  //     }
-  //   }
-  // }
-///////////////////////////////////////////////////////////

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:lms/models/user.dart';
 // import 'package:lms/routes/app_routes.dart';
 import 'package:lms/screen/beranda_screen.dart';
+import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
 import 'package:lms/screen/setting_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -23,11 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
   late User user;
-  late Image image;
-  late Title title;
 
   tapBottomItem(int index) {
-    if (index != 3) {
+    if (index != 2) {
       setState(() {
         _currentIndex = index;
       });
@@ -62,18 +65,30 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context) {
             return AlertDialog(
               title: const Text('Apakah Anda Ingin Keluar?'),
-              actionsAlignment: MainAxisAlignment.spaceBetween,
+              actionsAlignment: MainAxisAlignment.spaceAround,
               actions: [
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context, true);
                   },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    elevation: 2,
+                    backgroundColor: Colors.red,
+                  ),
                   child: const Text('Ya'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context, false);
                   },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    elevation: 2,
+                    backgroundColor: const Color(0xFF0873A1),
+                  ),
                   child: const Text('Tidak'),
                 ),
               ],
@@ -84,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        // endDrawer: endDrawer(),
+        endDrawer: endDrawer(),
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -108,9 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
           items: const [
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/homeIcon.png')),
+                // activeIcon: ImageIcon(AssetImage('assets/images/iconHome.png')),
                 label: "Beranda"),
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/profileIcon.png')),
+                // activeIcon: ImageIcon(AssetImage('assets/images/profile1.png')),
                 label: "Profil"),
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/settingIcon.png')),
@@ -121,140 +138,239 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Drawer endDrawer() {
-  //   return Drawer(
-  //     child: Column(children: [
-  //       Container(
-  //         color: Colors.blue,
-  //         child: Column(
-  //           children: [
-  //             SizedBox(
-  //               height: MediaQuery.of(context).padding.top,
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 32),
-  //               child: AspectRatio(
-  //                 aspectRatio: 1 / 1,
-  //                 child: ClipRRect(
-  //                   borderRadius: BorderRadius.circular(500),
-  //                   // child: Image.network(
-  //                   //   // user.profilePhoto!,
-  //                   //   // fit: BoxFit.cover,
-  //                   // ),
-  //                 ),
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-  //             Text.rich(
-  //               TextSpan(
-  //                 text: "${user.nama} ",
-  //                 style: const TextStyle(
-  //                   fontSize: 16,
-  //                 ),
-  //                 children: [
-  //                   TextSpan(
-  //                     text: "(${user.username})",
-  //                     style: const TextStyle(
-  //                       fontStyle: FontStyle.italic,
-  //                       fontSize: 14,
-  //                       color: Colors.white,
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //             ),
-  //             // Text(
-  //             //   user.email,
-  //             //   style: const TextStyle(
-  //             //     color: Colors.white,
-  //             //   ),
-  //             // ),
-  //             const SizedBox(
-  //               height: 16,
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       const SizedBox(
-  //         height: 8,
-  //       ),
-  //       Padding(
-  //         padding: const EdgeInsets.symmetric(horizontal: 16),
-  //         child: GestureDetector(
-  //           onTap: () {
-  //             GoRouter.of(context).goNamed(
-  //               AppRoutes.profile,
-  //               extra: User.dummy(),
-  //             );
-  //           },
-  //           child: Container(
-  //             padding: const EdgeInsets.all(8),
-  //             decoration: BoxDecoration(
-  //               borderRadius: BorderRadius.circular(8),
-  //               color: Colors.blue[100],
-  //             ),
-  //             child: const Row(
-  //               children: [
-  //                 Flexible(
-  //                   child: Row(
-  //                     children: [
-  //                       Icon(
-  //                         Icons.edit_rounded,
-  //                       ),
-  //                       SizedBox(
-  //                         width: 8,
-  //                       ),
-  //                       Flexible(
-  //                         child: Text(
-  //                           "Edit Profile",
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 Icon(
-  //                   Icons.chevron_right_rounded,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ),
-  //       const Expanded(
-  //         child: SizedBox(),
-  //       ),
-  //       Container(
-  //         margin: const EdgeInsets.symmetric(horizontal: 16),
-  //         padding: const EdgeInsets.all(8),
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(8),
-  //           color: Colors.blue,
-  //         ),
-  //         child: const Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Icon(
-  //               Icons.logout_rounded,
-  //               color: Colors.white,
-  //             ),
-  //             SizedBox(
-  //               width: 8,
-  //             ),
-  //             Text(
-  //               "Logout",
-  //               style: TextStyle(
-  //                 color: Colors.white,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       const SizedBox(
-  //         height: 16,
-  //       ),
-  //     ]),
-  //   );
-  // }
+  Drawer endDrawer() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          _drawerHeader(),
+          const SizedBox(height: 8),
+          _drawerMenu(),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+  Widget _drawerHeader() {
+    return const UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        color: Color(0xFF0873A1),
+      ),
+      margin: EdgeInsets.only(bottom: 14),
+      currentAccountPicture: ClipOval(
+        child: Image(
+          image: AssetImage('assets/images/logoSMK.png'),
+          height: 50,
+        ),
+      ),
+      accountName: Text(
+        'SMK PLUS SUKARAJA',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+      accountEmail: Text(
+        // user.nama,
+        // "${user.nama}",
+        '( Wafa Ghaida Aulia )',
+        style: TextStyle(
+          fontStyle: FontStyle.italic,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+
+  Widget _drawerMenu() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              GoRouter.of(context).goNamed(
+                AppRoutes.jadwal,
+                // extra: User.dummy(),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 0.2,
+                    blurRadius: 1.5,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: const Row(
+                children: [
+                  Flexible(
+                    child: Row(
+                      children: [
+                        // Icon(Icons.edit_rounded),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            "Edit Password",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ImageIcon(AssetImage('assets/images/ubahPass.png')),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              // GoRouter.of(context).goNamed(
+              //   AppRoutes.jadwal,
+              // extra: User.dummy(),
+              // );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 0.2,
+                    blurRadius: 1.5,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: const Row(
+                children: [
+                  Flexible(
+                    child: Row(
+                      children: [
+                        // Icon(Icons.edit_rounded),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            "Tentang",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ImageIcon(AssetImage('assets/images/about.png')),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Anda yakin keluar?"),
+                  content:
+                      const Text("Akun anda akan keluar dari aplikasi ini"),
+                  actions: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        elevation: 2,
+                        backgroundColor: const Color(0xFF0873A1),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Tidak"),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        elevation: 2,
+                        backgroundColor: Colors.red,
+                      ),
+                      onPressed: () {
+                        Future.delayed(const Duration(seconds: 1), () {
+                          // Navigator.pop(context);
+                          logOut();
+                          context.goNamed('login');
+                        });
+                      },
+                      child: const Text("Ya"),
+                    ),
+                  ],
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 0.2,
+                    blurRadius: 1.5,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: const Row(
+                children: [
+                  Flexible(
+                    child: Row(
+                      children: [
+                        // Icon(Icons.edit_rounded),
+                        SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            "Keluar",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ImageIcon(AssetImage('assets/images/logout.png')),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  logOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    // preferences?.clear() ;
+    setState(() {
+      preferences.remove("login");
+      preferences.remove("email");
+    });
+
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const LoginScreen(),
+      ),
+      (route) => false,
+    );
+  }
 }

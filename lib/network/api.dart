@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Network{
   final String _url = 'https://story-api.dicoding.dev/v1';
   // 192.168.1.2 is my IP, change with your IP address
+  // ignore: prefer_typing_uninitialized_variables
   var token;
 
   _getToken() async{

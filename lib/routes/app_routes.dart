@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lms/screen/bayar_screen.dart';
 import 'package:lms/screen/home_screen.dart';
+import 'package:lms/screen/jadwal_screen.dart';
 import 'package:lms/screen/login_screen.dart';
+import 'package:lms/screen/news_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
-import 'package:lms/screen/setting_screen.dart';
 
+import '../models/news.dart';
 import '../models/user.dart';
 
 class AppRoutes {
   static const String splash = "splash";
   static const String login = "login";
   static const String home = "home";
-  static const String setting = "setting";
   static const String profile = "profile";
+  static const String jadwal = "jadwal";
+  static const String bayar = "bayar";
+  static const String news = "news";
 
   static Page _loginScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
@@ -46,11 +51,26 @@ class AppRoutes {
     );
   }
 
-  static Page _settingScreenBuilder(BuildContext context, GoRouterState state) {
+  static Page _jadwalScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
-      child: SettingScreen(
-          // news: state.extra! as News,
-          ),
+      child: JadwalScreen(),
+    );
+  }
+
+  static Page _bayarScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: BayarScreen(),
+    );
+  }
+
+  static Page _newsScreenBuilder(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    return MaterialPage(
+      child: NewsScreen(
+        news: state.extra! as News,
+      ),
     );
   }
 
@@ -80,9 +100,19 @@ class AppRoutes {
             pageBuilder: _profileScreenBuilder,
           ),
           GoRoute(
-            name: setting,
-            path: "setting",
-            pageBuilder: _settingScreenBuilder,
+            name: jadwal,
+            path: "jadwal",
+            pageBuilder: _jadwalScreenBuilder,
+          ),
+          GoRoute(
+            name: bayar,
+            path: "bayar",
+            pageBuilder: _bayarScreenBuilder,
+          ),
+          GoRoute(
+            name: news,
+            path: "news:id",
+            pageBuilder: _newsScreenBuilder,
           ),
         ],
       ),

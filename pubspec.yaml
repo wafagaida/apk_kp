@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.2.0
   go_router: ^10.0.0
   loading_animation_widget: ^1.2.0+4
+  flutter_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:
@@ -66,13 +67,26 @@ flutter:
   assets:
     - assets/images/logoSMK.png
     - assets/images/homeIcon.png
+    - assets/images/iconHome.png
     - assets/images/profileIcon.png
+    - assets/images/profile1.png
     - assets/images/settingIcon.png
+    - assets/images/setting1.png
     - assets/images/jadwal.png
     - assets/images/bayar.png
     - assets/images/transkip.png
+    - assets/images/nilaiSmt.png
+    - assets/images/panduan.png
+    - assets/images/lainnya.png
     - assets/images/nis.png
     - assets/images/jurusan.png
+    - assets/images/ubahPass.png
+    - assets/images/about.png
+    - assets/images/logout.png
+    - assets/images/back.png
+    - assets/images/tempat.png
+    - assets/images/jam.png
+    - assets/images/icis.png
   
   fonts:
     - family: Dosis

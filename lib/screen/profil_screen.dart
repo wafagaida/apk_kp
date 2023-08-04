@@ -19,6 +19,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController? _nisController;
   TextEditingController? _kelasController;
   TextEditingController? _jurusanController;
+  TextEditingController? _emailController;
+  TextEditingController? _jkController;
+  TextEditingController? _alamatController;
   // TextEditingController? _nomorTlpController;
 
   @override
@@ -27,6 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _nameController = TextEditingController(text: widget.user.nama);
     _kelasController = TextEditingController(text: widget.user.kelas);
     _jurusanController = TextEditingController(text: widget.user.jurusan);
+    _emailController = TextEditingController(text: widget.user.email);
+    _jkController = TextEditingController(text: widget.user.jenisKelamin);
+    _alamatController = TextEditingController(text: widget.user.alamat);
     super.initState();
   }
 
@@ -36,6 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _nameController!.dispose();
     _kelasController!.dispose();
     _jurusanController!.dispose();
+    _alamatController!.dispose();
+    _jkController!.dispose();
+    _emailController!.dispose();
     super.dispose();
   }
 
@@ -54,6 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         backgroundColor: const Color(0xFF0873A1),
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -118,13 +128,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 6),
               TextFormField(
-                controller: _nisController,
+                controller: _emailController,
                 enabled: false,
                 readOnly: true,
                 decoration: InputDecoration(
                   isDense: true,
                   prefixIcon: const ImageIcon(
                     AssetImage('assets/images/nis.png'),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Email",
+                style: TextStyle(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 6),
+              TextFormField(
+                controller: _kelasController,
+                enabled: false,
+                readOnly: true,
+                decoration: InputDecoration(
+                  isDense: true,
+                  prefixIcon: const ImageIcon(
+                    AssetImage('assets/images/jurusan.png'),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
@@ -210,13 +243,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 6),
               TextFormField(
-                controller: _jurusanController,
+                controller: _alamatController,
                 enabled: false,
                 readOnly: true,
                 decoration: InputDecoration(
                   isDense: true,
                   prefixIcon: const ImageIcon(
                     AssetImage('assets/images/jurusan.png'),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Jenis Kelamin",
+                style: TextStyle(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 6),
+              TextFormField(
+                controller: _jkController,
+                enabled: false,
+                readOnly: true,
+                decoration: InputDecoration(
+                  isDense: true,
+                  prefixIcon: const ImageIcon(
+                    AssetImage('assets/images/nis.png'),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
@@ -233,19 +289,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 6),
               TextFormField(
-                controller: _nisController,
+                controller: _kelasController,
                 enabled: false,
                 readOnly: true,
                 decoration: InputDecoration(
                   isDense: true,
                   prefixIcon: const ImageIcon(
-                    AssetImage('assets/images/nis.png'),
+                    AssetImage('assets/images/jurusan.png'),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
