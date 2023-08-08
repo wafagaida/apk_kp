@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       _pageController.animateToPage(
         index,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
     } else {
@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           unselectedItemColor: const Color.fromARGB(255, 169, 187, 196),
           selectedItemColor: Colors.white,
           currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
           onTap: tapBottomItem,
           items: const [
             BottomNavigationBarItem(
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               GoRouter.of(context).goNamed(
-                AppRoutes.jadwal,
+                AppRoutes.ubahPass,
                 // extra: User.dummy(),
               );
             },
@@ -218,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(width: 8),
                         Flexible(
                           child: Text(
-                            "Edit Password",
+                            "Ubah Password",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -279,22 +280,10 @@ class _HomeScreenState extends State<HomeScreen> {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text("Anda yakin keluar?"),
+                  title: const Text("Yakin keluar?"),
                   content:
                       const Text("Akun anda akan keluar dari aplikasi ini"),
                   actions: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        elevation: 2,
-                        backgroundColor: const Color(0xFF0873A1),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Tidak"),
-                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -310,6 +299,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                       },
                       child: const Text("Ya"),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        elevation: 2,
+                        backgroundColor: const Color(0xFF0873A1),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Tidak"),
                     ),
                   ],
                 ),

@@ -5,7 +5,9 @@ import 'package:lms/screen/home_screen.dart';
 import 'package:lms/screen/jadwal_screen.dart';
 import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/news_screen.dart';
+import 'package:lms/screen/panduan_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
+import 'package:lms/screen/ubahpass_screen.dart';
 
 import '../models/news.dart';
 import '../models/user.dart';
@@ -18,6 +20,8 @@ class AppRoutes {
   static const String jadwal = "jadwal";
   static const String bayar = "bayar";
   static const String news = "news";
+  static const String ubahPass = "ubahPass";
+  static const String panduan = "panduan";
 
   static Page _loginScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
@@ -74,6 +78,18 @@ class AppRoutes {
     );
   }
 
+   static Page _ubahPassScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: UbahPassScreen(),
+    );
+  }
+
+  static Page _panduanScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: PanduanScreen(),
+    );
+  }
+
   static final GoRouter goRouter = GoRouter(
     initialLocation: "/login",
     debugLogDiagnostics: true,
@@ -100,6 +116,11 @@ class AppRoutes {
             pageBuilder: _profileScreenBuilder,
           ),
           GoRoute(
+            name: ubahPass,
+            path: "ubahPass",
+            pageBuilder: _ubahPassScreenBuilder,
+          ),
+          GoRoute(
             name: jadwal,
             path: "jadwal",
             pageBuilder: _jadwalScreenBuilder,
@@ -108,6 +129,11 @@ class AppRoutes {
             name: bayar,
             path: "bayar",
             pageBuilder: _bayarScreenBuilder,
+          ),
+          GoRoute(
+            name: panduan,
+            path: "panduan",
+            pageBuilder: _panduanScreenBuilder,
           ),
           GoRoute(
             name: news,

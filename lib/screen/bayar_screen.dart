@@ -37,75 +37,93 @@ class _BayarScreenState extends State<BayarScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    elevation: 3,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 35,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          color: Colors.red,
-                          padding: const EdgeInsets.only(top: 5, left: 12),
-                          child: const Text(
-                            "Tunggakan",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.white,
+                  Expanded(
+                    flex: 1,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      elevation: 3,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            padding: const EdgeInsets.only(top: 5, left: 12),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                              ),
+                              color: Colors.red,
+                            ),
+                            child: const Text(
+                              "Tunggakan",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Rp. 1.000.000",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Rp. 1.000.000",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                      ],
+                          const SizedBox(height: 8),
+                        ],
+                      ),
                     ),
                   ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    elevation: 3,
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 35,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          color: Colors.blueAccent,
-                          padding: const EdgeInsets.only(top: 5, left: 12),
-                          child: const Text(
-                            "Lunas",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.white,
+                  Expanded(
+                    flex: 1,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      elevation: 3,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 35,
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            padding: const EdgeInsets.only(top: 5, left: 12),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                              ),
+                              color: Colors.blueAccent,
+                            ),
+                            child: const Text(
+                              "Lunas",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Rp. 1.000.000",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Rp. 1.000.000",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                      ],
+                          const SizedBox(height: 8),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 15),
               const Text(
                 "Riwayat Transaksi",
                 style: TextStyle(
@@ -113,7 +131,37 @@ class _BayarScreenState extends State<BayarScreen> {
                   fontSize: 18,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
+              const Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(image: AssetImage('assets/images/icis.png')),
+                  Text(
+                    "Praktikum",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Spacer(),
+                  Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          "RP. 200.000",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Text("07-10-2023"),
+                    ],
+                  ),
+                  SizedBox(width: 10),
+                ],
+              ),
+              const Divider(thickness: 1),
               const Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

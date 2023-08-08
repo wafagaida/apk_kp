@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../models/news.dart';
 
@@ -39,42 +40,55 @@ class _NewsScreenState extends State<NewsScreen> {
         ),
         backgroundColor: const Color(0xFF0873A1),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              widget.news.gambar,
-              width: double.infinity,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.news.judul,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.news.deskripsi,
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.justify,
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              ),
-            ),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pattern.png'),
+            fit: BoxFit.cover,
+          ),
         ),
+        child: News == null
+            ? Center(
+                child: LoadingAnimationWidget.waveDots(
+                    size: 40, color: Theme.of(context).primaryColor),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(
+                      widget.news.gambar,
+                      width: double.infinity,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.news.judul,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            widget.news.deskripsi,
+                            style: const TextStyle(fontSize: 16),
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

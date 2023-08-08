@@ -25,54 +25,62 @@ class _BerandaScreenState extends State<BerandaScreen> {
     size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-      body: Column(
-        children: [
-          BerandaWidget.header(
-            user: widget.user,
-            homeScaffoldState: widget.homeScaffold,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pattern.png'),
+            fit: BoxFit.cover,
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
-            child: BerandaWidget.cardMenu(),
-          ),
-          const SizedBox(height: 20),
-          const Divider(thickness: 1),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 35,
+        ),
+        child: Column(
+          children: [
+            BerandaWidget.header(
+              user: widget.user,
+              homeScaffoldState: widget.homeScaffold,
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: BerandaWidget.cardMenu(),
+            ),
+            const SizedBox(height: 20),
+            const Divider(thickness: 1),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 35,
+                      ),
+                      child: BerandaWidget.sectionTitle(
+                        "Pengumuman",
+                      ),
                     ),
-                    child: BerandaWidget.sectionTitle(
-                      "Pengumuman",
+                    const SizedBox(height: 16),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 35),
+                    //   child: BerandaWidget.pengumumanCard(
+                    //     size,
+                    //     "https://picsum.photos/1080/690",
+                    //     "PPDB",
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: BerandaWidget.pengumumanNews(
+                        size,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 35),
-                  //   child: BerandaWidget.pengumumanCard(
-                  //     size,
-                  //     "https://picsum.photos/1080/690",
-                  //     "PPDB",
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    child: BerandaWidget.pengumumanNews(
-                      size,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

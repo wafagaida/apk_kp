@@ -3,16 +3,16 @@ class User {
   String? password;
   String? nis;
   String? nama;
-  String? agama;
-  String? jenisKelamin;
+  String? jk;
+  String? tl;
   String? kelas;
   String? jurusan;
+  String? agama;
+  String? tahunMasuk;
   String? email;
   String? noTelp;
   String? alamat;
   String? tempatLahir;
-  String? tanggalLahir;
-  String? tahunMasuk;
   String? title;
   String? image;
 
@@ -22,13 +22,13 @@ class User {
     this.nis,
     this.nama,
     this.agama,
-    this.jenisKelamin,
+    this.jk,
     this.kelas,
     this.jurusan,
     this.email,
     this.noTelp,
     this.alamat,
-    this.tanggalLahir,
+    this.tl,
     this.tempatLahir,
     this.tahunMasuk,
     this.image,
@@ -41,15 +41,15 @@ class User {
       password: json['password'],
       nama: json['nama'],
       agama: json['agama'],
-      jenisKelamin: json['jenis_kelamin'],
+      jk: json['jk'],
+      tl: json['tl'],
+      tahunMasuk: json['tahun_masuk'],
       kelas: json['kelas'],
       jurusan: json['jurusan'],
       email: json['email'],
       noTelp: json['no_hp'],
       alamat: json['alamat'],
       tempatLahir: json['tempat_lahir'],
-      tanggalLahir: json['tanggal_lahir'],
-      tahunMasuk: json['tahun_masuk'],
     );
   }
 //   Map<String, dynamic> toJson() {
@@ -85,18 +85,18 @@ class User {
 
   factory User.dummy() {
     return User(
-      nama: "Wafa Ghaida Aulia",
-      username: "wafagaid",
-      password: "12345",
-      email: "wafa@email.com",
-      nis: "12131241415344",
-      kelas: "X",
-      jurusan: "Multimedia",
-      alamat: "Sukaraja Karpaw",
-      jenisKelamin: "Perempuan"
-      // profilePhoto:
-      //     "https://cdn.idntimes.com/content-images/community/2020/09/104967619-2451390651819718-4934284928595035666-n-2fc82b7325949c7d003c1c58e17d48b7.jpg",
-      // phoneNumber: "08124368912",
-    );
+        nama: "Wafa Ghaida Aulia",
+        username: "wafagaid",
+        password: "12345",
+        email: "wafa@email.com",
+        nis: "12131241415344",
+        kelas: "X",
+        jurusan: "Multimedia",
+        alamat: "Sukaraja Karpaw",
+        jk: "Perempuan"
+        // profilePhoto:
+        //     "https://cdn.idntimes.com/content-images/community/2020/09/104967619-2451390651819718-4934284928595035666-n-2fc82b7325949c7d003c1c58e17d48b7.jpg",
+        // phoneNumber: "08124368912",
+        );
   }
 }

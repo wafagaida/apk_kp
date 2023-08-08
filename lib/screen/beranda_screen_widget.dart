@@ -55,11 +55,11 @@ class HeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        height: 100,
+        height: 120,
         color: const Color(0xFF0873A1),
       ),
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 45),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -118,77 +118,93 @@ class CardMenu extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  GoRouter.of(context).goNamed(
+                    AppRoutes.jadwal,
+                    // extra: User.dummy(),
+                  );
+                },
+                child: Card(
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.jadwal,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/jadwal.png"),
-                      height: 50,
-                    ),
+                  color: Colors.white.withOpacity(0),
+                  // clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/jadwal.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Jadwal\nPelajaran",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Jadwal\nPelajaran",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  GoRouter.of(context).goNamed(
+                    AppRoutes.bayar,
+                    // extra: User.dummy(),
+                  );
+                },
+                child: Card(
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.bayar,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/bayar.png"),
-                      height: 50,
-                    ),
+                  color: Colors.white.withOpacity(0),
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/bayar.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Pembayaran\n",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Pembayaran\n",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  // GoRouter.of(context).goNamed(
+                  //   AppRoutes.bayar,
+                  //   // extra: User.dummy(),
+                  // );
+                },
+                child: Card(
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.jadwal,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/transkip.png"),
-                      height: 50,
-                    ),
+                  color: Colors.white.withOpacity(0),
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/transkip.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Rekapitulasi\nNilai",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Rekapitulasi\nNilai",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
           ],
         ),
@@ -196,77 +212,92 @@ class CardMenu extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  // GoRouter.of(context).goNamed(
+                  //   AppRoutes.jadwal,
+                  //   // extra: User.dummy(),
+                  // );
+                },
+                child: Card(
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.jadwal,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/nilaiSmt.png"),
-                      height: 50,
-                    ),
+                  color: Colors.white.withOpacity(0),
+                  // clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/nilaiSmt.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Nilai\nSementara",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Nilai\nSementara",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  GoRouter.of(context).goNamed(
+                    AppRoutes.panduan,
+                  );
+                },
+                child: Card(
+                  color: Colors.white.withOpacity(0),
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.jadwal,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/panduan.png"),
-                      height: 50,
-                    ),
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/panduan.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Panduan\nPembayaran",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Panduan\nPembayaran",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
-            Column(
-              children: [
-                Card(
+            Expanded(
+              // flex: 1,
+              child: InkWell(
+                onTap: () {
+                  // GoRouter.of(context).goNamed(
+                  //   AppRoutes.bayar,
+                  //   // extra: User.dummy(),
+                  // );
+                },
+                child: Card(
+                  color: Colors.white.withOpacity(0),
                   elevation: 0,
-                  child: InkWell(
-                    onTap: () {
-                      GoRouter.of(context).goNamed(
-                        AppRoutes.jadwal,
-                        // extra: User.dummy(),
-                      );
-                    },
-                    child: const Image(
-                      image: AssetImage("assets/images/lainnya.png"),
-                      height: 50,
-                    ),
+                  child: const Column(
+                    children: [
+                      Image(
+                        image: AssetImage("assets/images/lainnya.png"),
+                        height: 40,
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        "Lainnya\n",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Lainnya\n",
-                  style: TextStyle(fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              ),
             ),
           ],
         ),
