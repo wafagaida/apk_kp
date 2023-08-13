@@ -3,17 +3,18 @@ import 'package:go_router/go_router.dart';
 import 'package:lms/screen/bayar_screen.dart';
 import 'package:lms/screen/home_screen.dart';
 import 'package:lms/screen/jadwal_screen.dart';
+import 'package:lms/screen/loading.dart';
 import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/news_screen.dart';
 import 'package:lms/screen/panduan_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
+import 'package:lms/screen/rekapNilai_screen.dart';
 import 'package:lms/screen/ubahpass_screen.dart';
 
 import '../models/news.dart';
-import '../models/user.dart';
 
 class AppRoutes {
-  static const String splash = "splash";
+  static const String loading = "loading";
   static const String login = "login";
   static const String home = "home";
   static const String profile = "profile";
@@ -22,6 +23,7 @@ class AppRoutes {
   static const String news = "news";
   static const String ubahPass = "ubahPass";
   static const String panduan = "panduan";
+  static const String rekap = "rekap";
 
   static Page _loginScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
@@ -30,28 +32,32 @@ class AppRoutes {
   }
 
   static Page _homeScreenBuilder(BuildContext context, GoRouterState state) {
+    // late User user;
+    // if (state.extra != null && state.extra is User) {
+    //   user = state.extra as User;
+    // } else {
+    //   user = User.dummy();
+    // }
     return const MaterialPage(
       child: HomeScreen(),
     );
   }
 
-  // static Page _splashScreenBuilder(BuildContext context, GoRouterState state) {
-  //   return const MaterialPage(
-  //     child: SplashScreen(),
-  //   );
-  // }
+  static Page _loadingBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: Loading(),
+    );
+  }
 
   static Page _profileScreenBuilder(BuildContext context, GoRouterState state) {
-    late User user;
-    if (state.extra != null && state.extra is User) {
-      user = state.extra as User;
-    } else {
-      user = User.dummy();
-    }
-    return MaterialPage(
-      child: ProfileScreen(
-          user: user,
-          ),
+    // late User user;
+    // if (state.extra != null && state.extra is User) {
+    //   user = state.extra as User;
+    // } else {
+    //   // user = User.dummy();
+    // }
+    return const MaterialPage(
+      child: ProfileScreen(),
     );
   }
 
@@ -67,10 +73,13 @@ class AppRoutes {
     );
   }
 
-  static Page _newsScreenBuilder(
-    BuildContext context,
-    GoRouterState state,
-  ) {
+  static Page _rekapNilaiScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: RekapNilaiScreen(),
+    );
+  }
+
+  static Page _newsScreenBuilder(BuildContext context, GoRouterState state) {
     return MaterialPage(
       child: NewsScreen(
         news: state.extra! as News,
@@ -78,7 +87,8 @@ class AppRoutes {
     );
   }
 
-   static Page _ubahPassScreenBuilder(BuildContext context, GoRouterState state) {
+  static Page _ubahPassScreenBuilder(
+      BuildContext context, GoRouterState state) {
     return const MaterialPage(
       child: UbahPassScreen(),
     );
@@ -95,11 +105,11 @@ class AppRoutes {
     debugLogDiagnostics: true,
     routerNeglect: true,
     routes: [
-      // GoRoute(
-      //   name: splash,
-      //   path: "/splash",
-      //   pageBuilder: _splashScreenBuilder,
-      // ),
+      GoRoute(
+        name: loading,
+        path: "/loading",
+        pageBuilder: _loadingBuilder,
+      ),
       GoRoute(
         name: login,
         path: "/login",
@@ -134,6 +144,11 @@ class AppRoutes {
             name: panduan,
             path: "panduan",
             pageBuilder: _panduanScreenBuilder,
+          ),
+          GoRoute(
+            name: rekap,
+            path: "rekap",
+            pageBuilder: _rekapNilaiScreenBuilder,
           ),
           GoRoute(
             name: news,

@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:go_router/go_router.dart';
 import 'package:lms/models/user.dart';
-// import 'package:lms/routes/app_routes.dart';
+import 'package:lms/network/api_user.dart';
+import 'package:lms/network/user_api.dart';
 import 'package:lms/screen/beranda_screen.dart';
 import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
-import 'package:lms/screen/setting_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../network/constants.dart';
 import '../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
-    super.key,
+    Key? key,
     // required this.user,
-  });
+  }) : super(key: key);
+
   // final User user;
 
   @override
@@ -23,16 +24,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+  int currentIndex = 0;
   late Size size;
+  // late User user;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
-  late User user;
 
   tapBottomItem(int index) {
     if (index != 2) {
       setState(() {
-        _currentIndex = index;
+        currentIndex = index;
       });
       _pageController.animateToPage(
         index,
@@ -40,17 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
         curve: Curves.easeIn,
       );
     } else {
-      scaffoldKey.currentState!.openEndDrawer();
+      scaffoldKey.currentState!.openEndDrawer(); // Un-commented this line
     }
   }
 
-  getUserDetail() {
-    user = User.dummy();
-  }
+  // getUserDetail() async {
+  //   user = User.dummy();
+  // }
 
   @override
   void initState() {
-    getUserDetail();
+    // getUserDetail();
     _pageController.addListener(() {});
     super.initState();
   }
@@ -105,20 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
           controller: _pageController,
           children: [
             BerandaScreen(
-              user: user,
+              // user: user,
               homeScaffold: scaffoldKey,
             ),
-            ProfileScreen(
-              user: user,
-            ),
-            const SettingScreen()
+            const ProfileScreen(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(0xFF0873A1),
           unselectedItemColor: const Color.fromARGB(255, 169, 187, 196),
           selectedItemColor: Colors.white,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           type: BottomNavigationBarType.fixed,
           onTap: tapBottomItem,
           items: const [
@@ -130,9 +128,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: ImageIcon(AssetImage('assets/images/profileIcon.png')),
                 // activeIcon: ImageIcon(AssetImage('assets/images/profile1.png')),
                 label: "Profil"),
-            BottomNavigationBarItem(
-                icon: ImageIcon(AssetImage('assets/images/settingIcon.png')),
-                label: "Pengaturan"),
+            // BottomNavigationBarItem(
+            //     icon: ImageIcon(AssetImage('assets/images/settingIcon.png')),
+            //     label: "Pengaturan"),
           ],
         ),
       ),
@@ -191,10 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           GestureDetector(
             onTap: () {
-              GoRouter.of(context).goNamed(
-                AppRoutes.ubahPass,
+              // GoRouter.of(context).goNamed(
+              //   AppRoutes.ubahPass,
                 // extra: User.dummy(),
-              );
+              // );
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -294,8 +292,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         Future.delayed(const Duration(seconds: 1), () {
                           // Navigator.pop(context);
-                          logOut();
-                          context.goNamed('login');
+                          logout().then((value) => {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => const LoginScreen()),
+                                    (route) => false)
+                              });
                         });
                       },
                       child: const Text("Ya"),

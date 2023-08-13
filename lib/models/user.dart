@@ -1,73 +1,71 @@
 class User {
+  int? id;
   String? username;
   String? password;
   String? nis;
+  String? nik;
   String? nama;
-  String? jk;
-  String? tl;
   String? kelas;
   String? jurusan;
-  String? agama;
-  String? tahunMasuk;
-  String? email;
-  String? noTelp;
+  String? jenis_kelamin;
+  String? tanggal_lahir;
+  String? tahun_masuk;
+  String? no_tlp;
   String? alamat;
-  String? tempatLahir;
-  String? title;
-  String? image;
+  String? remember_token;
 
   User({
+    this.id,
     this.username,
     this.password,
     this.nis,
+    this.nik,
     this.nama,
-    this.agama,
-    this.jk,
+    this.jenis_kelamin,
     this.kelas,
     this.jurusan,
-    this.email,
-    this.noTelp,
+    this.no_tlp,
     this.alamat,
-    this.tl,
-    this.tempatLahir,
-    this.tahunMasuk,
-    this.image,
-    this.title,
+    this.tanggal_lahir,
+    this.tahun_masuk,
+    this.remember_token,
   });
 
-  factory User.fromJson(Map<dynamic, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      username: json['username'],
-      password: json['password'],
-      nama: json['nama'],
-      agama: json['agama'],
-      jk: json['jk'],
-      tl: json['tl'],
-      tahunMasuk: json['tahun_masuk'],
-      kelas: json['kelas'],
-      jurusan: json['jurusan'],
-      email: json['email'],
-      noTelp: json['no_hp'],
-      alamat: json['alamat'],
-      tempatLahir: json['tempat_lahir'],
+      id: json['users']['id'],
+      username: json['users']['username'],
+      password: json['users']['password'],
+      nis: json['users']['nis'],
+      nik: json['users']['nik'],
+      nama: json['users']['nama'],
+      jenis_kelamin: json['users']['jenis_kelamin'],
+      tanggal_lahir: json['users']['tanggal_lahir'],
+      tahun_masuk: json['users']['tahun_masuk'],
+      kelas: json['users']['kelas'],
+      jurusan: json['users']['jurusan'],
+      no_tlp: json['users']['no_tlp'],
+      alamat: json['users']['alamat'],
+      remember_token: json['remember_token'],
     );
   }
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['username'] = username;
-//     data['password'] = password;
-//     data['nama'] = nama;
-//     data['agama'] = agama;
-//     data['jenis_kelamin'] = jenisKelamin;
-//     data['kelas'] = kelas;
-//     data['jurusan'] = jurusan;
-//     data['alamat'] = alamat;
-//     data['email'] = email;
-//     data['tempat_lahir'] = tempatLahir;
-//     data['tanggal_lahir'] = tanggalLahir;
-//     data['tahun_masuk'] = tahunMasuk;
-//     return data;
-//   }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['id'] = id;
+  //   data['username'] = username;
+  //   data['password'] = password;
+  //   data['nis'] = nis;
+  //   data['nik'] = nik;
+  //   data['nama'] = nama;
+  //   data['jenis_kelamin'] = jenisKelamin;
+  //   data['kelas'] = kelas;
+  //   data['jurusan'] = jurusan;
+  //   data['alamat'] = alamat;
+  //   data['tanggal_lahir'] = tanggalLahir;
+  //   data['no_tlp'] = noTlp;
+  //   data['tahun_masuk'] = tahunMasuk;
+  //   return data;
+  // }
 
 // factory User.fromMap(Map<String, dynamic> map) {
 //     return User(
@@ -88,12 +86,10 @@ class User {
         nama: "Wafa Ghaida Aulia",
         username: "wafagaid",
         password: "12345",
-        email: "wafa@email.com",
         nis: "12131241415344",
         kelas: "X",
         jurusan: "Multimedia",
         alamat: "Sukaraja Karpaw",
-        jk: "Perempuan"
         // profilePhoto:
         //     "https://cdn.idntimes.com/content-images/community/2020/09/104967619-2451390651819718-4934284928595035666-n-2fc82b7325949c7d003c1c58e17d48b7.jpg",
         // phoneNumber: "08124368912",

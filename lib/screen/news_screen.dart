@@ -1,7 +1,11 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:lms/network/api_news.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/news.dart';
 
@@ -17,10 +21,36 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  // @override
-  // void initState() {
-  //   super.initState();
+  // String nama = '';
+  List<News> _news = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // _loadUserData();
+    _getStudent();
+  }
+
+  // _loadUserData() async {
+  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
+  //   var user = json.decode(localStorage.getString('user'));
+
+  //   if (user != null) {
+  //     setState(() {
+  //       nama = user['nama'];
+  //     });
+  //   }
   // }
+
+  _getStudent() {
+    getNews().then((news) {
+      if (mounted) {
+        setState(() {
+          _news = news as List<News>;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +77,7 @@ class _NewsScreenState extends State<NewsScreen> {
             fit: BoxFit.cover,
           ),
         ),
+        // ignore: unnecessary_null_comparison
         child: News == null
             ? Center(
                 child: LoadingAnimationWidget.waveDots(
@@ -57,7 +88,7 @@ class _NewsScreenState extends State<NewsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      widget.news.gambar,
+                      widget.news.image,
                       width: double.infinity,
                     ),
                     const SizedBox(
@@ -69,7 +100,7 @@ class _NewsScreenState extends State<NewsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.news.judul,
+                            widget.news.title,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -78,7 +109,7 @@ class _NewsScreenState extends State<NewsScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            widget.news.deskripsi,
+                            widget.news.content,
                             style: const TextStyle(fontSize: 16),
                             textAlign: TextAlign.justify,
                           ),

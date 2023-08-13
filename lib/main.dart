@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:lms/screen/home_screen.dart';
-// import 'package:lms/screen/login_screen.dart';
 
 import 'routes/app_routes.dart';
 
@@ -15,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Sistem Informasi Siswa Sukaraja',
       theme: ThemeData(fontFamily: 'Dosis'),
       routerDelegate: AppRoutes.goRouter.routerDelegate,
       routeInformationParser: AppRoutes.goRouter.routeInformationParser,
