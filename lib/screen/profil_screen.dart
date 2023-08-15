@@ -76,6 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),

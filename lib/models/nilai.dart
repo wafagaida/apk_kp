@@ -17,12 +17,16 @@
 //     );
 //   }
 // }
- class Nilai {
+class Nilai {
   final int userId;
   final int id;
   final String title;
 
-  Nilai({required this.userId, required this.id, required this.title});
+  Nilai({
+    required this.userId,
+    required this.id,
+    required this.title,
+  });
 
   factory Nilai.fromJson(Map<String, dynamic> json) {
     return Nilai(

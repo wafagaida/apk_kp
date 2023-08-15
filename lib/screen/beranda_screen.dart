@@ -35,7 +35,6 @@ class _BerandaScreenState extends State<BerandaScreen> {
 
   _loadUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    // var user = jsonDecode(localStorage.getString('user'));
     var userJson = pref.getString('user')!;
     var user = jsonDecode(userJson);
 
@@ -67,6 +66,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),

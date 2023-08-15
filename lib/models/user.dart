@@ -7,12 +7,12 @@ class User {
   String nama;
   String kelas;
   String jurusan;
-  String jenis_kelamin;
-  String tanggal_lahir;
-  String tahun_masuk;
-  String no_tlp;
+  String jenisKelamin;
+  String tanggalLahir;
+  String tahunMasuk;
+  String noTlp;
   String alamat;
-  String remember_token;
+  // String remember_token;
 
   User({
     required this.id,
@@ -21,14 +21,14 @@ class User {
     required this.nis,
     required this.nik,
     required this.nama,
-    required this.jenis_kelamin,
+    required this.jenisKelamin,
     required this.kelas,
     required this.jurusan,
-    required this.no_tlp,
+    required this.noTlp,
     required this.alamat,
-    required this.tanggal_lahir,
-    required this.tahun_masuk,
-    required this.remember_token,
+    required this.tanggalLahir,
+    required this.tahunMasuk,
+    // required this.remember_token,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -39,14 +39,14 @@ class User {
       nis: json['users']['nis'],
       nik: json['users']['nik'],
       nama: json['users']['nama'],
-      jenis_kelamin: json['users']['jenis_kelamin'],
-      tanggal_lahir: json['users']['tanggal_lahir'],
-      tahun_masuk: json['users']['tahun_masuk'],
+      jenisKelamin: json['users']['jenis_kelamin'],
+      tanggalLahir: json['users']['tanggal_lahir'],
+      tahunMasuk: json['users']['tahun_masuk'],
       kelas: json['users']['kelas'],
       jurusan: json['users']['jurusan'],
-      no_tlp: json['users']['no_tlp'],
+      noTlp: json['users']['no_tlp'],
       alamat: json['users']['alamat'],
-      remember_token: json['remember_token'],
+      // remember_token: json['remember_token'],
     );
   }
   // Map<String, dynamic> toJson() {
