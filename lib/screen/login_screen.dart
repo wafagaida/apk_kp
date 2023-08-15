@@ -3,12 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms/network/api_response.dart';
-import 'package:lms/screen/home_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/user.dart';
 import '../network/api_user.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,43 +17,37 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  TextEditingController txtUsername = TextEditingController();
-  TextEditingController txtPassword = TextEditingController();
+  TextEditingController _userController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
   bool _isLoading = false;
   bool isVisiblePassword = false;
 
-  void _loginUser() async {
+  SnackBar _showMsg(String message, Color color) {
+    return SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+      duration: const Duration(seconds: 2),
+    );
+  }
+
+  void login() async {
+    setState(() {
+      _isLoading = true;
+    });
     var data = {
-      'username': txtUsername.text,
-      'password': txtPassword.text
+      'username': _userController.text,
+      'password': _passController.text
     };
+
     var response = await Network().auth(data, '/login');
     var body = json.decode(response.body);
 
+    // if (body["message"] == "success") {
     if (body["success"] == true) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('token', json.encode(body['token']));
+      pref.setString('user', json.encode(body['user']));
       if (!mounted) return;
-      // _saveAndRedirectToHome(response.data as User);
-      _saveAndRedirectToHome();
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      if (!mounted) return;
-       ScaffoldMessenger.of(context).showSnackBar(_showMsg(
-        "Username atau Password Salah!",
-        Colors.red,
-      ));
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(SnackBar(content: Text('${response.error}')));
-    }
-  }
-
-  void _saveAndRedirectToHome() async {
-    // SharedPreferences pref = await SharedPreferences.getInstance();
-    // await pref.setString('token', user.remember_token ?? '');
-    // await pref.setInt('userId', user.id ?? 0);
-
-    if (!mounted) return;
       showDialog(
         context: context,
         builder: (context) {
@@ -77,66 +68,18 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
       GoRouter.of(context).goNamed('home');
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(_showMsg(
+        "Username atau Password Salah!",
+        Colors.red,
+      ));
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
-
-    SnackBar _showMsg(String message, Color color) {
-    return SnackBar(
-      content: Text(message),
-      backgroundColor: color,
-      duration: const Duration(seconds: 2),
-    );
-  }
-
-//   void login() async {
-//     setState(() {
-//       _isLoading = true;
-//     });
-//     var data = {
-//       'username': _userController.text,
-//       'password': _passController.text
-//     };
-
-//     var response = await Network().auth(data, '/login');
-//     var body = json.decode(response.body);
-
-//     // if (body["message"] == "success") {
-//     if (body["success"] == true) {
-//       // SharedPreferences localStorage = await SharedPreferences.getInstance();
-//       // localStorage.setString('token', json.encode(body['token']));
-//       // localStorage.setString('user', json.encode(body['user']));
-//       if (!mounted) return;
-//       showDialog(
-//         context: context,
-//         builder: (context) {
-//           Future.delayed(
-//             const Duration(seconds: 2),
-//             () {
-//               Navigator.of(context).pop(true);
-//             },
-//           );
-//           return const AlertDialog(
-//             title: Text(
-//               "Berhasil Masuk",
-//               textAlign: TextAlign.center,
-//             ),
-//             icon: Icon(CupertinoIcons.heart),
-//             insetPadding: EdgeInsets.symmetric(horizontal: 70),
-//           );
-//         },
-//       );
-//       GoRouter.of(context).goNamed('home');
-//     } else {
-//       if (!mounted) return;
-//       ScaffoldMessenger.of(context).showSnackBar(_showMsg(
-//         "Username atau Password Salah!",
-//         Colors.red,
-//       ));
-//     }
-
-//     setState(() {
-//       _isLoading = false;
-//     });
-//   }
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   horizontal: 4, vertical: 6),
                               child: TextFormField(
                                 // autofocus: true,
-                                controller: txtUsername,
+                                controller: _userController,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor:
@@ -237,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 4, vertical: 10),
                               child: TextFormField(
-                                controller: txtPassword,
+                                controller: _passController,
                                 obscureText: !isVisiblePassword,
                                 decoration: InputDecoration(
                                   filled: true,
@@ -293,10 +236,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   onPressed: () {
                                     if (formkey.currentState!.validate()) {
-                                      setState(() {
-                                        _isLoading = true;
-                                        _loginUser();
-                                      });
+                                      // setState(() {
+                                      //   _isLoading = true;
+                                      //   _loginUser();
+                                      // });
+                                      login();
                                     }
                                   },
                                   child: _isLoading
@@ -330,8 +274,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-
 
 //   saveSession(String username) async {
 //     SharedPreferences pref = await SharedPreferences.getInstance();

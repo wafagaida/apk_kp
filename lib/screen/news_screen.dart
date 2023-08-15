@@ -3,9 +3,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:lms/network/api_news.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/news.dart';
 
@@ -13,43 +12,27 @@ class NewsScreen extends StatefulWidget {
   NewsScreen({
     super.key,
     required this.news,
+    required this.id,
   });
   News news;
+  News id;
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-  // String nama = '';
-  List<News> _news = [];
 
-  @override
-  void initState() {
-    super.initState();
-    // _loadUserData();
-    _getStudent();
-  }
+  Future<List<News>> fetchData() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/news');
+    final response = await http.get(url);
 
-  // _loadUserData() async {
-  //   SharedPreferences localStorage = await SharedPreferences.getInstance();
-  //   var user = json.decode(localStorage.getString('user'));
-
-  //   if (user != null) {
-  //     setState(() {
-  //       nama = user['nama'];
-  //     });
-  //   }
-  // }
-
-  _getStudent() {
-    getNews().then((news) {
-      if (mounted) {
-        setState(() {
-          _news = news as List<News>;
-        });
-      }
-    });
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      return jsonResponse.map((data) => News.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load News');
+    }
   }
 
   @override

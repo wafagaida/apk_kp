@@ -1,34 +1,34 @@
 class User {
-  int? id;
-  String? username;
-  String? password;
-  String? nis;
-  String? nik;
-  String? nama;
-  String? kelas;
-  String? jurusan;
-  String? jenis_kelamin;
-  String? tanggal_lahir;
-  String? tahun_masuk;
-  String? no_tlp;
-  String? alamat;
-  String? remember_token;
+  int id;
+  String username;
+  String password;
+  String nis;
+  String nik;
+  String nama;
+  String kelas;
+  String jurusan;
+  String jenis_kelamin;
+  String tanggal_lahir;
+  String tahun_masuk;
+  String no_tlp;
+  String alamat;
+  String remember_token;
 
   User({
-    this.id,
-    this.username,
-    this.password,
-    this.nis,
-    this.nik,
-    this.nama,
-    this.jenis_kelamin,
-    this.kelas,
-    this.jurusan,
-    this.no_tlp,
-    this.alamat,
-    this.tanggal_lahir,
-    this.tahun_masuk,
-    this.remember_token,
+    required this.id,
+    required this.username,
+    required this.password,
+    required this.nis,
+    required this.nik,
+    required this.nama,
+    required this.jenis_kelamin,
+    required this.kelas,
+    required this.jurusan,
+    required this.no_tlp,
+    required this.alamat,
+    required this.tanggal_lahir,
+    required this.tahun_masuk,
+    required this.remember_token,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -81,18 +81,18 @@ class User {
 //     );
 //   }
 
-  factory User.dummy() {
-    return User(
-        nama: "Wafa Ghaida Aulia",
-        username: "wafagaid",
-        password: "12345",
-        nis: "12131241415344",
-        kelas: "X",
-        jurusan: "Multimedia",
-        alamat: "Sukaraja Karpaw",
-        // profilePhoto:
-        //     "https://cdn.idntimes.com/content-images/community/2020/09/104967619-2451390651819718-4934284928595035666-n-2fc82b7325949c7d003c1c58e17d48b7.jpg",
-        // phoneNumber: "08124368912",
-        );
-  }
+  // factory User.dummy() {
+  //   return User(
+  //       nama: "Wafa Ghaida Aulia",
+  //       username: "wafagaid",
+  //       password: "12345",
+  //       nis: "12131241415344",
+  //       kelas: "X",
+  //       jurusan: "Multimedia",
+  //       alamat: "Sukaraja Karpaw",
+  //       // profilePhoto:
+  //       //     "https://cdn.idntimes.com/content-images/community/2020/09/104967619-2451390651819718-4934284928595035666-n-2fc82b7325949c7d003c1c58e17d48b7.jpg",
+  //       // phoneNumber: "08124368912",
+  //       );
+  // }
 }

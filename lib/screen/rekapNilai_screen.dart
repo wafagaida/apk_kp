@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/models/nilai.dart';
-import 'package:lms/network/api_nilai.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../network/api_user.dart';
@@ -16,42 +15,18 @@ class RekapNilaiScreen extends StatefulWidget {
   State<RekapNilaiScreen> createState() => _RekapNilaiScreenState();
 }
 
+Future<List<Nilai>> fetchData() async {
+  var url = Uri.parse('https://jsonplaceholder.typicode.com/albums');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    return jsonResponse.map((data) => Nilai.fromJson(data)).toList();
+  } else {
+    throw Exception('Unexpected error occured!');
+  }
+}
+
 class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
-  String name = '';
-  List<Nilai> _nilai = [];
-
-  @override
-  void initState() {
-    _getNilai();
-    _loadUserData();
-    super.initState();
-  }
-
-  _loadUserData() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var userString = localStorage.getString('user');
-
-    if (userString != null) {
-      var user = jsonDecode(userString);
-
-      if (user != null) {
-        setState(() {
-          name = user['nama'];
-        });
-      }
-    }
-  }
-
-  _getNilai() {
-    NilaiService.getNilai().then((nilai) {
-      if (mounted) {
-        setState(() {
-          _nilai = nilai;
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,108 +46,81 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
         ),
         backgroundColor: const Color(0xFF0873A1),
       ),
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(15),
-          child: ListView(
-            children: [
-              Row(
-                children: [
-                  // Text(
-                  //   'Hello, ',
-                  //   style: TextStyle(
-                  //     fontSize: 20,
-                  //   ),
-                  // ),
-                  Text(
-                    name,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const Text(
-                "Students Data",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              nilai(),
-            ],
-          ),
+      body: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        elevation: 10,
+        child: FutureBuilder<List<Nilai>>(
+          future: fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: DataTable(
+                  // columnSpacing: 30,
+                  columns: const [
+                    DataColumn(
+                      label: Text(
+                        'No',
+                        style: TextStyle(
+                          // fontSize: 18,
+                          // color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Mata Pelajaran',
+                        style: TextStyle(
+                          // fontSize: 18,
+                          // color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'Nilai',
+                        style: TextStyle(
+                          // fontSize: 18,
+                          // color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                  rows: List.generate(
+                    snapshot.data!.length,
+                    (index) {
+                      var data = snapshot.data![index];
+                      return DataRow(
+                          color: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            return Colors.white;
+                          }),
+                          cells: [
+                            DataCell(Text(data.id.toString())),
+                            DataCell(Text(data.title)),
+                            DataCell(Text(data.userId.toString())),
+                          ]);
+                    },
+                  ).toList(),
+                  showBottomBorder: true,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            return const Center(
+                child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))));
+          },
         ),
       ),
     );
   }
 
-  Table nilai() {
-    return Table(
-      border: const TableBorder(
-        horizontalInside: BorderSide(
-          width: 1,
-          color: Colors.black,
-        ),
-      ),
-      children: [
-        const TableRow(children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Text(
-              "No.",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Text(
-              "Mata Pelajaran",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Text(
-              "Nilai",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ]),
-        for (Nilai nilai in _nilai)
-          TableRow(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                child: Text(
-                  "${nilai.kd_mapel}",
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                child: Text(
-                  "${nilai.nilai}",
-                ),
-              ),
-            ],
-          ),
-      ],
-    );
-  }
-
-  void logout() async {
-    var res = await Network().getData('/logout');
-    var body = json.decode(res.body);
-    if (body['success']) {
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.remove('user');
-      localStorage.remove('token');
-      GoRouter.of(context).goNamed('login');
-    }
-  }
+  
 }

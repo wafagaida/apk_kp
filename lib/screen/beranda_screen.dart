@@ -2,25 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms/models/user.dart';
-import 'package:lms/network/api_post.dart';
-import 'package:lms/network/constants.dart';
+import 'package:lms/models/news.dart';
+import 'package:lms/routes/app_routes.dart';
 import 'package:lms/screen/beranda_screen_widget.dart';
-import 'package:lms/screen/login_screen.dart';
 import 'package:http/http.dart' as http;
-
-import '../network/api_response.dart';
-import '../network/api_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'home_fragment_widgets.dart';
 
 class BerandaScreen extends StatefulWidget {
   const BerandaScreen({
     super.key,
-    // required this.user,
     required this.homeScaffold,
   });
-  // final User user;
   final GlobalKey<ScaffoldState> homeScaffold;
 
   @override
@@ -29,58 +23,40 @@ class BerandaScreen extends StatefulWidget {
 
 class _BerandaScreenState extends State<BerandaScreen> {
   late Size size;
-  List<dynamic> _postList = [];
-  int userId = 0;
-  bool _loading = true;
-
-  // // get all posts
-  // Future<void> retrievePosts() async {
-  //   userId = await getUserId();
-  //   ApiResponse response = await getPosts();
-
-  //   if (response.error == null) {
-  //     setState(() {
-  //       _postList = response.data as List<dynamic>;
-  //       _loading = _loading ? !_loading : _loading;
-  //     });
-  //   } else if (response.error == unauthorized) {
-  //     logout().then((value) => {
-  //          GoRouter.of(context).goNamed('login')
-  //         });
-  //   } else {
-  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //       content: Text('${response.error}'),
-  //     ));
-  //   }
-  // }
-
-  // User? dataFromAPI;
-  // _getData() async {
-  //   userId = await getUserId();
-  //   ApiResponse response = await getPosts();
-
-  //   try {
-  //     String url = "http://127.0.0.1:8000/api/posts";
-  //     http.Response res = await http.get(Uri.parse(url));
-  //     if (res.statusCode == 200) {
-  //       dataFromAPI = User.fromJson(json.decode(res.body));
-  //       _loading = false;
-  //       setState(() {});
-  //     } else {
-  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //         content: Text('${response.error}'),
-  //       ));
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
+  late GlobalKey<ScaffoldState> homeScaffold;
+  String nama = '';
 
   @override
   void initState() {
-    // _getData();
-    // retrievePosts();
     super.initState();
+    homeScaffold = widget.homeScaffold;
+    _loadUserData();
+  }
+
+  _loadUserData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    // var user = jsonDecode(localStorage.getString('user'));
+    var userJson = pref.getString('user')!;
+    var user = jsonDecode(userJson);
+
+    if (user != null) {
+      setState(() {
+        nama = user['nama'];
+      });
+    }
+  }
+
+  //  get data pengumuman
+  Future<List<News>> fetchData() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/news');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+      return jsonResponse.map((data) => News.fromJson(data)).toList();
+    } else {
+      throw Exception('Gagal Menampilkan Daftar Pengumuman');
+    }
   }
 
   @override
@@ -97,10 +73,58 @@ class _BerandaScreenState extends State<BerandaScreen> {
         ),
         child: Column(
           children: [
-            BerandaWidget.header(
-              // user: widget.user,
-              homeScaffoldState: widget.homeScaffold,
-            ),
+            Stack(children: [
+              Container(
+                height: 120,
+                color: const Color(0xFF0873A1),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 35, top: 45, right: 35),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Halo,",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              nama,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            const Icon(
+                              Icons.waving_hand_rounded,
+                              color: Colors.yellowAccent,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        homeScaffold.currentState!.openEndDrawer();
+                      },
+                      child: const CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/images/logoSMK.png"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -112,31 +136,87 @@ class _BerandaScreenState extends State<BerandaScreen> {
                       child: BerandaWidget.cardMenu(),
                     ),
                     const SizedBox(height: 20),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 35,
                       ),
-                      child: BerandaWidget.sectionTitle(
+                      child: Text(
                         "Pengumuman",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 35),
-                    //   child: BerandaWidget.pengumumanCard(
-                    //     size,
-                    //     "https://picsum.photos/1080/690",
-                    //     "PPDB",
-                    //   ),
-                    // ),
-                    // const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
-                      child: BerandaWidget.pengumumanNews(
-                        size,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Center(
+                        child: FutureBuilder<List<News>>(
+                          future: fetchData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Column(
+                                children: snapshot.data!.map((news) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 5,
+                                    ),
+                                    child: ListTile(
+                                      leading: SizedBox(
+                                        width: size.width * 0.25,
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            bottomLeft: Radius.circular(8),
+                                          ),
+                                          child: AspectRatio(
+                                            aspectRatio: 1 / 1,
+                                            child: Image.network(
+                                              news.image,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        news.title,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: Text(
+                                        news.content,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      trailing: IconButton(
+                                        onPressed: () {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   // Detail adalah halaman yang dituju
+                                          //   // Detail membawah url untuk ditampilkan di halaman Detail
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         Detail(url: news.url),
+                                          //   ),
+                                          // );
+                                          GoRouter.of(context)
+                                              .goNamed(AppRoutes.news);
+                                        },
+                                        icon: const Icon(Icons.open_in_new),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            return const CircularProgressIndicator();
+                          },
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

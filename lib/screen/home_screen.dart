@@ -1,15 +1,12 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms/models/user.dart';
 import 'package:lms/network/api_user.dart';
-import 'package:lms/network/user_api.dart';
 import 'package:lms/screen/beranda_screen.dart';
-import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../network/constants.dart';
-import '../routes/app_routes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -26,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   late Size size;
+  bool _isLoading = false;
   // late User user;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
@@ -292,12 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         Future.delayed(const Duration(seconds: 1), () {
                           // Navigator.pop(context);
-                          logout().then((value) => {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => const LoginScreen()),
-                                    (route) => false)
-                              });
+                          logout();
                         });
                       },
                       child: const Text("Ya"),
@@ -359,21 +352,43 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  logOut() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    // preferences?.clear() ;
+  void logout() async {
     setState(() {
-      preferences.remove("login");
-      preferences.remove("email");
+      _isLoading = true;
     });
 
-    // ignore: use_build_context_synchronously
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => const LoginScreen(),
-      ),
-      (route) => false,
-    );
+    var res = await Network().getData('/logout');
+    var body = json.decode(res.body);
+
+    if (body["success"] == true) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.remove('user');
+      pref.remove('token');
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(
+            const Duration(seconds: 2),
+            () {
+              Navigator.of(context).pop(true);
+            },
+          );
+          return const AlertDialog(
+            title: Text(
+              "Berhasil Keluar",
+              textAlign: TextAlign.center,
+            ),
+            icon: Icon(CupertinoIcons.heart),
+            insetPadding: EdgeInsets.symmetric(horizontal: 70),
+          );
+        },
+      );
+      GoRouter.of(context).goNamed('login');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

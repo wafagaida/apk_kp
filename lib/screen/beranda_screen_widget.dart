@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms/network/api_news.dart';
 
-import '../models/news.dart';
 import '../routes/app_routes.dart';
 
 class BerandaWidget {
-  static header({
-    // required User user,
-    required GlobalKey<ScaffoldState> homeScaffoldState,
-  }) {
-    return HeaderWidget(
-      // user: user,
-      homeScaffoldState: homeScaffoldState,
-    );
-  }
 
   static cardMenu() {
     return const CardMenu();
@@ -36,79 +25,79 @@ class BerandaWidget {
   //   );
   // }
 
-  static pengumumanNews(Size size) {
-    return PengumumanNews(size: size);
-  }
+  // static pengumumanNews(Size size) {
+  //   return PengumumanNews(size: size);
+  // }
 }
 
 
 
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({
-    super.key,
-    // required this.user,
-    required this.homeScaffoldState,
-  });
+// class HeaderWidget extends StatelessWidget {
+//   const HeaderWidget({
+//     super.key,
+//     // required this.user,
+//     required this.homeScaffoldState,
+//   });
 
-  // final User user;
-  final GlobalKey<ScaffoldState> homeScaffoldState;
+//   // final User user;
+//   final GlobalKey<ScaffoldState> homeScaffoldState;
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: [
-      Container(
-        height: 120,
-        color: const Color(0xFF0873A1),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 35, top: 45, right: 35),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Halo,",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      // user.nama,
-                      "Wafa Ghaida Aulia",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.waving_hand_rounded,
-                      color: Colors.yellowAccent,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                homeScaffoldState.currentState!.openEndDrawer();
-              },
-              child: const CircleAvatar(
-                backgroundImage: AssetImage("assets/images/logoSMK.png"),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ]);
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(children: [
+//       Container(
+//         height: 120,
+//         color: const Color(0xFF0873A1),
+//       ),
+//       Padding(
+//         padding: const EdgeInsets.only(left: 35, top: 45, right: 35),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             const Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   "Halo,",
+//                   style: TextStyle(
+//                     color: Colors.white,
+//                     fontSize: 18,
+//                   ),
+//                 ),
+//                 Row(
+//                   children: [
+//                     Text(
+//                       // user.nama,
+//                       "Wafa Ghaida Aulia",
+//                       style: TextStyle(
+//                         fontSize: 18,
+//                         fontWeight: FontWeight.bold,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                     SizedBox(width: 5),
+//                     Icon(
+//                       Icons.waving_hand_rounded,
+//                       color: Colors.yellowAccent,
+//                     ),
+//                   ],
+//                 ),
+//               ],
+//             ),
+//             GestureDetector(
+//               onTap: () {
+//                 homeScaffoldState.currentState!.openEndDrawer();
+//               },
+//               child: const CircleAvatar(
+//                 backgroundImage: AssetImage("assets/images/logoSMK.png"),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ]);
+//   }
+// }
 
 class CardMenu extends StatelessWidget {
   const CardMenu({super.key});
@@ -334,68 +323,68 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
-class PengumumanNews extends StatelessWidget {
-  const PengumumanNews({
-    super.key,
-    required this.size,
-  });
+// class PengumumanNews extends StatelessWidget {
+//   const PengumumanNews({
+//     super.key,
+//     required this.size,
+//   });
 
-  final Size size;
+//   final Size size;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            spreadRadius: 1,
-            color: Colors.black12,
-          ),
-        ],
-      ),
-      child: FutureBuilder<List<News>>(
-        future: getNews(),  // Fetch news data from the API
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            if (snapshot.data!.isNotEmpty) {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final newsItem = snapshot.data![index];
-                  return InkWell(
-                    onTap: () {
-                      // Handle news item tap
-                    },
-                    child: ListTile(
-                      leading: Image.network(newsItem.image),
-                      title: Text(newsItem.title),
-                      subtitle: Text(newsItem.content),
-                    ),
-                  );
-                },
-              );
-            } else {
-              return const Center(
-                child: Text("Tidak Ada Data"),
-              );
-            }
-          } else {
-            return const Center(
-              child: Text("Error"),
-            );
-          }
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: const EdgeInsets.only(bottom: 16),
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(8),
+//         color: Colors.white,
+//         boxShadow: const [
+//           BoxShadow(
+//             spreadRadius: 1,
+//             color: Colors.black12,
+//           ),
+//         ],
+//       ),
+//       child: FutureBuilder<List<News>>(
+//         future: getNews(),  // Fetch news data from the API
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           } else if (snapshot.hasData) {
+//             if (snapshot.data!.isNotEmpty) {
+//               return ListView.builder(
+//                 itemCount: snapshot.data!.length,
+//                 itemBuilder: (context, index) {
+//                   final newsItem = snapshot.data![index];
+//                   return InkWell(
+//                     onTap: () {
+//                       // Handle news item tap
+//                     },
+//                     child: ListTile(
+//                       leading: Image.network(newsItem.image),
+//                       title: Text(newsItem.title),
+//                       subtitle: Text(newsItem.content),
+//                     ),
+//                   );
+//                 },
+//               );
+//             } else {
+//               return const Center(
+//                 child: Text("Tidak Ada Data"),
+//               );
+//             }
+//           } else {
+//             return const Center(
+//               child: Text("Error"),
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
 
 
 // class PengumumanNews extends StatelessWidget {

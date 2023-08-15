@@ -1,249 +1,297 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lms/network/api_response.dart';
-import 'package:lms/network/api_user.dart';
-import 'package:lms/network/user_api.dart';
-import 'package:lms/screen/login_screen.dart';
-
-import '../models/user.dart';
-import '../network/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
-    // required this.user,
   });
-  // final User user;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User? user;
+  // User? user
+  String nama = '';
+  String nis = '';
+  String nik = '';
+  String kelas = '';
+  String jurusan = '';
+  String jenisKelamin = '';
+  String tanggalLahir = '';
+  String tahunMasuk = '';
+  String noTlp = '';
+  String alamat = '';
   bool loading = true;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController txtNamaController = TextEditingController();
 
-  // get user detail
-  void getUser() async {
-    ApiResponse response = await getUserDetail();
-    if(response.error == null) {
+  _loadUserData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    // var user = jsonDecode(localStorage.getString('user'));
+    var userJson = pref.getString('user')!;
+    var user = jsonDecode(userJson);
+
+    if (user != null) {
       setState(() {
-        user = response.data as User;
-        loading = false;
-        txtNamaController.text = user!.nama ?? '';
+        nama = user['nama'];
+        nis = user['nis'];
+        nik = user['nik'];
+        kelas = user['kelas'];
+        jurusan = user['jurusan'];
+        jenisKelamin = user['jenis_kelamin'];
+        tanggalLahir = user['tanggal_lahir'];
+        tahunMasuk = user['tahun_masuk'];
+        noTlp = user['no_tlp'];
+        alamat = user['alamat'];
       });
-    }
-    else if(response.error == unauthorized){
-      logout().then((value) => {
-        GoRouter.of(context).goNamed('login')
-        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false)
-      });
-    }
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('${response.error}')
-      ));
     }
   }
-
 
   @override
   void initState() {
     super.initState();
-    getUser();
-    // _getData();
+    _loadUserData();
   }
-
-  // Future<void> _getUsers() async {
-  //   try {
-  //     final response = await _network
-  //         .getData(ApiConstants.users); // Memanggil API menggunakan Network
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = json.decode(response.body);
-  //       setState(() {
-  //         _user = User.fromJson(data);
-  //       });
-  //     } else {
-  //       print('Failed to load data');
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching data: $e');
-  //   }
-  // }
-
-//  _getData() async {
-//     SharedPreferences localStorage = await SharedPreferences.getInstance();
-//     var user = jsonDecode((localStorage..getString('user')) as String);
-
-//     if(user != null) {
-//       setState(() {
-//         nama = user['nama'];
-//       });
-//     }
-//   }
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Center(child: CircularProgressIndicator(),) :
-       Scaffold(
-        appBar: AppBar(
-          title: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Profil",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          backgroundColor: const Color(0xFF0873A1),
-          elevation: 0,
-          automaticallyImplyLeading: false,
-        ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/pattern.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 25),
-                  const Text(
-                    "Nama Lengkap",
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                    controller: txtNamaController,
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      // label: Text('${_user.nama}'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jurusan.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "NIS",
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                    controller: txtNamaController,
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      // label: Text('${_user.nama}'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/nis.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "NIK",
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                    controller: txtNamaController,
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      // label: Text('${_user.nama}'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/nis.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Kelas",
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                    controller: txtNamaController,
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      // label: Text('${_user.nama}'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jurusan.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Jurusan",
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  TextFormField(
-                   controller: txtNamaController,
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      // label: Text('${_user.nama}'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jurusan.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            "Profil",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
-      );
-    }
+        backgroundColor: const Color(0xFF0873A1),
+        elevation: 0,
+        automaticallyImplyLeading: false,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/pattern.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  "Nama Lengkap",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(nama),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "NIS",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(nis),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/nis.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "NIK",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(nik),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/nis.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Kelas",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(kelas),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Jurusan",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(jurusan),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Jenis Kelamin",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(jenisKelamin),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Tanggal Lahir",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(tanggalLahir),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Alamat",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(alamat),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "No. Telpon",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(noTlp),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Tahun Masuk",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                TextFormField(
+                  enabled: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    label: Text(tahunMasuk),
+                    prefixIcon: const ImageIcon(
+                      AssetImage('assets/images/jurusan.png'),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
+}

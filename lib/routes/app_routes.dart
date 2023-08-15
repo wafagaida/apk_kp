@@ -83,6 +83,7 @@ class AppRoutes {
     return MaterialPage(
       child: NewsScreen(
         news: state.extra! as News,
+        id: state.extra! as News,
       ),
     );
   }
