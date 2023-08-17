@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/network/api_user.dart';
+import 'package:lms/routes/app_routes.dart';
 import 'package:lms/screen/beranda_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   late Size size;
+  // ignore: unused_field
   bool _isLoading = false;
   // late User user;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -187,10 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           GestureDetector(
             onTap: () {
-              // GoRouter.of(context).goNamed(
-              //   AppRoutes.ubahPass,
+              GoRouter.of(context).goNamed(
+                AppRoutes.ubahPass,
                 // extra: User.dummy(),
-              // );
+              );
             },
             child: Container(
               padding: const EdgeInsets.all(12),

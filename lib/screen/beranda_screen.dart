@@ -66,7 +66,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            opacity: 0.5,
+            opacity: 1,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),
@@ -173,34 +173,28 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                           child: AspectRatio(
                                             aspectRatio: 1 / 1,
                                             child: Image.network(
-                                              news.image,
+                                              news.image ?? '',
                                             ),
                                           ),
                                         ),
                                       ),
                                       title: Text(
-                                        news.title,
+                                        news.title ?? '',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       subtitle: Text(
-                                        news.content,
+                                        news.content ?? '',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       trailing: IconButton(
                                         onPressed: () {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   // Detail adalah halaman yang dituju
-                                          //   // Detail membawah url untuk ditampilkan di halaman Detail
-                                          //   MaterialPageRoute(
-                                          //     builder: (context) =>
-                                          //         Detail(url: news.url),
-                                          //   ),
-                                          // );
-                                          GoRouter.of(context)
-                                              .goNamed(AppRoutes.news);
+                                          GoRouter.of(context).goNamed(
+                                              AppRoutes.news,
+                                              pathParameters: {
+                                                'id': news.id.toString()
+                                              });
                                         },
                                         icon: const Icon(Icons.open_in_new),
                                       ),
@@ -211,7 +205,10 @@ class _BerandaScreenState extends State<BerandaScreen> {
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
                             }
-                            return const CircularProgressIndicator();
+                            return const Center(
+                                child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color(0xFF0873A1))));
                           },
                         ),
                       ),

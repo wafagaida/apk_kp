@@ -2,34 +2,33 @@
 
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/news.dart';
 
 class NewsScreen extends StatefulWidget {
-  NewsScreen({
-    super.key,
-    required this.news,
+  const NewsScreen({
+    Key? key,
     required this.id,
-  });
-  News news;
-  News id;
+  }) : super(key: key);
+
+  final int id;
 
   @override
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
 class _NewsScreenState extends State<NewsScreen> {
-
-  Future<List<News>> fetchData() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/news');
+  Future<News> fetchNews() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/news/${widget.id}');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
-      return jsonResponse.map((data) => News.fromJson(data)).toList();
+      final Map<String, dynamic> jsonResponse =
+          jsonDecode(response.body)['data'];
+      return News.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to load News');
     }
@@ -60,30 +59,37 @@ class _NewsScreenState extends State<NewsScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        // ignore: unnecessary_null_comparison
-        child: News == null
-            ? Center(
-                child: LoadingAnimationWidget.waveDots(
-                    size: 40, color: Theme.of(context).primaryColor),
-              )
-            : SingleChildScrollView(
+        child: FutureBuilder<News>(
+          future: fetchNews(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))));
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else if (snapshot.hasData) {
+              final News news = snapshot.data!;
+              return Padding(
+                padding: const EdgeInsets.only(top: 5),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.network(
-                      widget.news.image,
-                      width: double.infinity,
+                    CachedNetworkImage(
+                      imageUrl: '${news.image}',
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.news.title,
+                            news.title ?? '',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -92,7 +98,7 @@ class _NewsScreenState extends State<NewsScreen> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            widget.news.content,
+                            news.content ?? '',
                             style: const TextStyle(fontSize: 16),
                             textAlign: TextAlign.justify,
                           ),
@@ -102,7 +108,12 @@ class _NewsScreenState extends State<NewsScreen> {
                     ),
                   ],
                 ),
-              ),
+              );
+            } else {
+              return const Text("No data available.");
+            }
+          },
+        ),
       ),
     );
   }

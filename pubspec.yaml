@@ -42,6 +42,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   rflutter_alert: ^2.0.7
   provider: ^6.0.5
+  cached_network_image: ^3.2.3
   # flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
@@ -83,7 +84,13 @@ flutter:
     - assets/images/panduan.png
     - assets/images/lainnya.png
     - assets/images/nis.png
+    - assets/images/kelas.png
     - assets/images/jurusan.png
+    - assets/images/nama.png
+    - assets/images/tl.png
+    - assets/images/jk.png
+    - assets/images/alamat.png
+    - assets/images/noHp.png
     - assets/images/ubahPass.png
     - assets/images/about.png
     - assets/images/logout.png

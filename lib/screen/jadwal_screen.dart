@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:lms/models/jadwal.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class JadwalScreen extends StatefulWidget {
   const JadwalScreen({super.key});
@@ -7,9 +12,49 @@ class JadwalScreen extends StatefulWidget {
   State<JadwalScreen> createState() => _JadwalScreenState();
 }
 
+Future<List<Jadwal>> fetchData(String userKdKelas) async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  var user = pref.getString('user');
+  var url = Uri.parse('http://127.0.0.1:8000/api/jadwal/$userKdKelas');
+  final response = await http.get(
+    url,
+    headers: {
+      'Authorization': 'Bearer $user',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+    return jsonResponse.map((data) => Jadwal.fromJson(data)).toList();
+  } else {
+    throw Exception('Gagal Menampilkan Daftar Jadwal');
+  }
+}
+
+
 class _JadwalScreenState extends State<JadwalScreen> {
+  String? userKdKelas; 
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  void getUserData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var user = pref.getString('user');
+    var userData = jsonDecode(user!);
+    userKdKelas = userData['kd_kelas'];
+
+    setState(() {}); // Memanggil setState untuk memperbarui tampilan
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (userKdKelas == null) {
+      return const CircularProgressIndicator(); // Menampilkan loading jika userKdKelas belum tersedia
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -33,106 +78,97 @@ class _JadwalScreenState extends State<JadwalScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: const SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "Senin",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Card(
-                  color: Color(0xffE4B875),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Olahraga",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+        child: FutureBuilder<List<Jadwal>>(
+          future: fetchData(userKdKelas!),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // Mengelompokkan jadwal berdasarkan hari
+              Map<String, List<Jadwal>> jadwalByHari = {};
+              for (var jadwal in snapshot.data!) {
+                jadwalByHari.putIfAbsent(jadwal.hari ?? '', () => []);
+                jadwalByHari[jadwal.hari]!.add(jadwal);
+              }
+              return SingleChildScrollView(
+                child: Column(
+                  children: jadwalByHari.entries.map((entry) {
+                    String hari = entry.key;
+                    List<Jadwal> jadwalList = entry.value;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Text(
+                              hari,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 6),
-                        Row(
-                          children: [
-                            ImageIcon(AssetImage('assets/images/jam.png')),
-                            SizedBox(width: 8),
-                            Text("Jam 08.00-15.00"),
-                          ],
-                        ),
-                        SizedBox(height: 6),
-                        Row(
-                          children: [
-                            ImageIcon(AssetImage('assets/images/tempat.png')),
-                            SizedBox(width: 8),
-                            Text("Lapangan"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                          const SizedBox(height: 4),
+                          Column(
+                            children: jadwalList.map((jadwal) {
+                              return Card(
+                                color: const Color(0xffE4B875),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        jadwal.mapel?.namaMapel ?? '',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Row(
+                                        children: [
+                                          const ImageIcon(AssetImage(
+                                              'assets/images/jam.png')),
+                                          const SizedBox(width: 8),
+                                          Text("Jam ${jadwal.jam}"),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Row(
+                                        children: [
+                                          const ImageIcon(AssetImage(
+                                              'assets/images/tempat.png')),
+                                          const SizedBox(width: 8),
+                                          // Text("Lapangan"),
+                                          Text(jadwal.mapel?.namaGuru ?? ''),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "Selasa",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "Rabu",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "Kamis",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    "Jum'at",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+            return const Center(
+                child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))));
+          },
         ),
       ),
     );

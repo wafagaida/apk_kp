@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/user.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
@@ -13,39 +15,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // User? user
-  String nama = '';
-  String nis = '';
-  String nik = '';
-  String kelas = '';
-  String jurusan = '';
-  String jenisKelamin = '';
-  String tanggalLahir = '';
-  String tahunMasuk = '';
-  String noTlp = '';
-  String alamat = '';
+  User? data;
+
   bool loading = true;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController txtNamaController = TextEditingController();
 
   _loadUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    // var user = jsonDecode(localStorage.getString('user'));
     var userJson = pref.getString('user')!;
-    var user = jsonDecode(userJson);
 
-    if (user != null) {
+    if (userJson.isNotEmpty) {
       setState(() {
-        nama = user['nama'];
-        nis = user['nis'];
-        nik = user['nik'];
-        kelas = user['kelas'];
-        jurusan = user['jurusan'];
-        jenisKelamin = user['jenis_kelamin'];
-        tanggalLahir = user['tanggal_lahir'];
-        tahunMasuk = user['tahun_masuk'];
-        noTlp = user['no_tlp'];
-        alamat = user['alamat'];
+        data = User.fromJson(jsonDecode(userJson));
       });
     }
   }
@@ -76,10 +58,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            opacity: 0.5,
+            opacity: 1,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
-          ),
+          ), color: Colors.white,
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -93,17 +75,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(nama),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.nama ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/nama.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -113,17 +98,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(nis),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/nis.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.nis?.toString() ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/nis.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -133,37 +121,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(nik),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/nis.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.nik ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/nis.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  "Kelas",
+                  "Tingkat",
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(kelas),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(
+                          data?.tingkat ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/kelas.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -173,17 +168,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(jurusan),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.jurusan ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/jurusan.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Kelas",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(
+                          data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/tempat.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -193,17 +215,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(jenisKelamin),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.jenisKelamin ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/jk.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -213,17 +238,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(tanggalLahir),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.tanggalLahir ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/tl.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -233,17 +261,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(alamat),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.alamat ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/alamat.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -253,17 +284,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(noTlp),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.noTlp ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/noHp.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
@@ -273,17 +307,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 6),
-                TextFormField(
-                  enabled: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    label: Text(tahunMasuk),
-                    prefixIcon: const ImageIcon(
-                      AssetImage('assets/images/jurusan.png'),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
+                Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    enabled: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      label: Text(data?.tahunMasuk ?? 'Tidak ada keterangan'),
+                      prefixIcon: const ImageIcon(
+                        AssetImage('assets/images/jurusan.png'),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),

@@ -56,6 +56,7 @@ Future<ApiResponse> getUserDetail() async {
         apiResponse.data = User.fromJson(jsonDecode(response.body));
         break;
       case 404:
+        // ignore: unused_local_variable
         final errors = jsonDecode(response.body)['message'];
         apiResponse.error = jsonDecode(response.body)['message'];
         break;

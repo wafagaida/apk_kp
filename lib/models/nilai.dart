@@ -1,7 +1,7 @@
 // class Nilai {
 //   String? nis;
-//   int? kd_mapel;
-//   int? nilai;
+//   String? kd_mapel;
+//   String? nilai;
 
 //   Nilai({
 //     this.nis,

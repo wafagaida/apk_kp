@@ -9,9 +9,8 @@ import 'package:lms/screen/news_screen.dart';
 import 'package:lms/screen/panduan_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
 import 'package:lms/screen/rekapNilai_screen.dart';
+import 'package:lms/screen/smtNilai_screen.dart';
 import 'package:lms/screen/ubahpass_screen.dart';
-
-import '../models/news.dart';
 
 class AppRoutes {
   static const String loading = "loading";
@@ -24,6 +23,7 @@ class AppRoutes {
   static const String ubahPass = "ubahPass";
   static const String panduan = "panduan";
   static const String rekap = "rekap";
+  static const String smtNilai = "smtNilai";
 
   static Page _loginScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
@@ -62,7 +62,9 @@ class AppRoutes {
   }
 
   static Page _jadwalScreenBuilder(BuildContext context, GoRouterState state) {
+    // String id = state.pathParameters['kd_kelas'] ?? '0';
     return const MaterialPage(
+      // child: JadwalScreen(kdKelas: id),
       child: JadwalScreen(),
     );
   }
@@ -73,27 +75,54 @@ class AppRoutes {
     );
   }
 
-  static Page _rekapNilaiScreenBuilder(BuildContext context, GoRouterState state) {
+  static Page _rekapNilaiScreenBuilder(
+      BuildContext context, GoRouterState state) {
     return const MaterialPage(
       child: RekapNilaiScreen(),
     );
   }
 
+  static Page _smtNilaiScreenBuilder(
+      BuildContext context, GoRouterState state) {
+    return const MaterialPage(
+      child: SmtNilaiScreen(),
+    );
+  }
+
   static Page _newsScreenBuilder(BuildContext context, GoRouterState state) {
+    String id = state.pathParameters['id'] ?? '0';
     return MaterialPage(
       child: NewsScreen(
-        news: state.extra! as News,
-        id: state.extra! as News,
+        // news: state.extra! as News,
+        id: int.parse(id),
       ),
     );
   }
 
   static Page _ubahPassScreenBuilder(
       BuildContext context, GoRouterState state) {
+    // var users;
     return const MaterialPage(
       child: UbahPassScreen(),
+      // child: EditUser(users: users),
     );
   }
+  // static Page _ubahPassScreenBuilder(
+  //     BuildContext context, GoRouterState state) {
+  //   var users = state.extra  as User; // Mendapatkan data pengguna dari state.arguments
+
+  //   if (users != null) {
+  //     return MaterialPage(
+  //       child: EditUser(users: users),
+  //     );
+  //   } else {
+  //     // Handle the case where users is null
+  //     return MaterialPage(
+  //       child:
+  //           Placeholder(), // Gantikan dengan widget atau tindakan yang sesuai
+  //     );
+  //   }
+  // }
 
   static Page _panduanScreenBuilder(BuildContext context, GoRouterState state) {
     return const MaterialPage(
@@ -152,8 +181,13 @@ class AppRoutes {
             pageBuilder: _rekapNilaiScreenBuilder,
           ),
           GoRoute(
+            name: smtNilai,
+            path: "smtNilai",
+            pageBuilder: _smtNilaiScreenBuilder,
+          ),
+          GoRoute(
             name: news,
-            path: "news:id",
+            path: "$news:id",
             pageBuilder: _newsScreenBuilder,
           ),
         ],

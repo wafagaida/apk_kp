@@ -1,18 +1,18 @@
 class News {
-  int id;
-  String image;
-  String title;
-  String content;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? image;
+  String? title;
+  String? content;
+  String? createdAt;
+  String? updatedAt;
 
   News({
-    required this.id,
-    required this.image,
-    required this.title,
-    required this.content,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.image,
+    this.title,
+    this.content,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory News.fromJson(Map<String, dynamic> json) {
