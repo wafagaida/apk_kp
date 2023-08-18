@@ -85,7 +85,7 @@ class AppRoutes {
   static Page _smtNilaiScreenBuilder(
       BuildContext context, GoRouterState state) {
     return const MaterialPage(
-      child: SmtNilaiScreen(),
+      child: RekapNilaiScreen(),
     );
   }
 

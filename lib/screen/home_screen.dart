@@ -26,9 +26,21 @@ class _HomeScreenState extends State<HomeScreen> {
   late Size size;
   // ignore: unused_field
   bool _isLoading = false;
-  // late User user;
+  String nama = '';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
+
+  _loadUserData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var userJson = pref.getString('user')!;
+    var user = jsonDecode(userJson);
+
+    if (user != null) {
+      setState(() {
+        nama = user['nama'];
+      });
+    }
+  }
 
   tapBottomItem(int index) {
     if (index != 2) {
@@ -45,13 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // getUserDetail() async {
-  //   user = User.dummy();
-  // }
-
   @override
   void initState() {
-    // getUserDetail();
+    _loadUserData();
     _pageController.addListener(() {});
     super.initState();
   }
@@ -122,15 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
           items: const [
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/homeIcon.png')),
-                // activeIcon: ImageIcon(AssetImage('assets/images/iconHome.png')),
+                activeIcon: ImageIcon(AssetImage('assets/images/home1.png')),
                 label: "Beranda"),
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/profileIcon.png')),
-                // activeIcon: ImageIcon(AssetImage('assets/images/profile1.png')),
+                activeIcon: ImageIcon(AssetImage('assets/images/profile1.png')),
                 label: "Profil"),
-            // BottomNavigationBarItem(
-            //     icon: ImageIcon(AssetImage('assets/images/settingIcon.png')),
-            //     label: "Pengaturan"),
           ],
         ),
       ),
@@ -152,18 +157,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _drawerHeader() {
-    return const UserAccountsDrawerHeader(
-      decoration: BoxDecoration(
+    return UserAccountsDrawerHeader(
+      decoration: const BoxDecoration(
         color: Color(0xFF0873A1),
       ),
-      margin: EdgeInsets.only(bottom: 14),
-      currentAccountPicture: ClipOval(
+      margin: const EdgeInsets.only(bottom: 14),
+      currentAccountPicture: const ClipOval(
         child: Image(
           image: AssetImage('assets/images/logoSMK.png'),
           height: 50,
         ),
       ),
-      accountName: Text(
+      accountName: const Text(
         'SMK PLUS SUKARAJA',
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -171,10 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       accountEmail: Text(
-        // user.nama,
-        // "${user.nama}",
-        '( Wafa Ghaida Aulia )',
-        style: TextStyle(
+        nama,
+        style: const TextStyle(
           fontStyle: FontStyle.italic,
           fontSize: 16,
         ),
@@ -290,10 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: Colors.red,
                       ),
                       onPressed: () {
-                        Future.delayed(const Duration(seconds: 1), () {
-                          // Navigator.pop(context);
-                          logout();
-                        });
+                        logout();
                       },
                       child: const Text("Ya"),
                     ),
@@ -359,38 +359,90 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
 
-    var res = await Network().getData('/logout');
-    var body = json.decode(res.body);
+    try {
+      var res = await Network().getData('/logout');
+      var body = json.decode(res.body);
 
-    if (body["success"] == true) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.remove('user');
-      pref.remove('token');
-      if (!mounted) return;
+      if (body["success"] == true) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        await pref.remove('user');
+        await pref.remove('token');
+
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            Future.delayed(
+              const Duration(seconds: 2),
+              () {
+                Navigator.of(context).pop(true);
+                GoRouter.of(context)
+                    .goNamed('login'); // Navigate to login screen
+              },
+            );
+            return const AlertDialog(
+              title: Text(
+                "Berhasil Keluar",
+                textAlign: TextAlign.center,
+              ),
+              content: CircularProgressIndicator(),
+              insetPadding: EdgeInsets.symmetric(horizontal: 70),
+            );
+          },
+        );
+      } else {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Ada Kesalahan"),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6)),
+                    elevation: 2,
+                    backgroundColor: const Color(0xFF0873A1),
+                  ),
+                  child: const Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
       showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(
-            const Duration(seconds: 2),
-            () {
-              Navigator.of(context).pop(true);
-            },
-          );
-          return const AlertDialog(
-            title: Text(
-              "Berhasil Keluar",
-              textAlign: TextAlign.center,
-            ),
-            icon: Icon(CupertinoIcons.heart),
-            insetPadding: EdgeInsets.symmetric(horizontal: 70),
+          return AlertDialog(
+            title: Text("Error saat logout: $error"),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)),
+                  elevation: 2,
+                  backgroundColor: const Color(0xFF0873A1),
+                ),
+                child: const Text("OK"),
+              ),
+            ],
           );
         },
       );
-      GoRouter.of(context).goNamed('login');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 }

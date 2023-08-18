@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lms/models/nilai.dart';
 import 'package:http/http.dart' as http;
+import 'package:lms/network/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RekapNilaiScreen extends StatefulWidget {
   const RekapNilaiScreen({super.key});
@@ -11,22 +13,49 @@ class RekapNilaiScreen extends StatefulWidget {
   State<RekapNilaiScreen> createState() => _RekapNilaiScreenState();
 }
 
-Future<List<Nilai>> fetchData() async {
-  var url = Uri.parse('https://jsonplaceholder.typicode.com/albums');
-  final response = await http.get(url);
+Future<List<Nilai>> fetchData(String userNis) async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  var user = pref.getString('user');
+  var url = Uri.parse('$nilaiUrl/$userNis');
+  final response = await http.get(
+    url,
+    headers: {
+      'Authorization': 'Bearer $user',
+    },
+  );
+
   if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body);
+    final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
     return jsonResponse.map((data) => Nilai.fromJson(data)).toList();
   } else {
-    throw Exception('Unexpected error occured!');
+    throw Exception('Gagal Menampilkan Nilai');
   }
 }
 
 class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
+  String? userNis;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  void getUserData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var user = pref.getString('user');
+    var userData = jsonDecode(user!);
+    userNis = userData['nis'];
+
+    setState(() {}); // Memanggil setState untuk memperbarui tampilan
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (userNis == null) {
+      return const CircularProgressIndicator(); // Menampilkan loading jika userKdKelas belum tersedia
+    }
     return Scaffold(
-      // backgroundColor: Color(0xff151515),
       appBar: AppBar(
         title: const Text(
           "Rekapitulasi Nilai",
@@ -50,84 +79,116 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: FutureBuilder<List<Nilai>>(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 15),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          "X - Semester 1",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+        child: FutureBuilder<List<Nilai>>(
+          future: fetchData(userNis!),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
+              );
+            } else {
+              Map<String, List<Nilai>> nilaiBySmt = {};
+              for (var nilai in snapshot.data!) {
+                nilaiBySmt.putIfAbsent(nilai.semester ?? '', () => []);
+                nilaiBySmt[nilai.semester]!.add(nilai);
+              }
+              return ListView.builder(
+                itemCount: nilaiBySmt.length,
+                itemBuilder: (context, index) {
+                  String semester = nilaiBySmt.keys.toList()[index];
+                  List<Nilai> nilaiList = nilaiBySmt[semester]!;
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    elevation: 15,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Text(
+                            "X - Semester $semester",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                      ),
-                      DataTable(
-                        // columnSpacing: 30,
-                        // ignore: deprecated_member_use
-                        dataRowHeight: 30,
-                        columns: const [
-                          DataColumn(
-                            label: Text(
-                              'Mata Pelajaran',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
+                        Align(
+                          alignment: Alignment.center,
+                          child: DataTable(
+                            // ignore: deprecated_member_use
+                            dataRowHeight: 30,
+                            border: const TableBorder(
+                              bottom: BorderSide(color: Color(0xFF0873A1), width: 1),
+                              horizontalInside:
+                                  BorderSide(color: Color(0xFF0873A1), width: 1),
                             ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Nilai',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            columns: const [
+                              DataColumn(
+                                label: Text(
+                                  'No',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
-                              textAlign: TextAlign.center,
-                            ),
+                              DataColumn(
+                                label: Text(
+                                  'Mata Pelajaran',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Nilai',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                            rows: nilaiList.map((nilai) {
+                              final index = nilaiList.indexOf(nilai);
+                              return DataRow(cells: [
+                                DataCell(Text('${index + 1}')),
+                                DataCell(Text(nilai.mapel?.namaMapel ?? '')),
+                                DataCell(Text(nilai.nilai ?? '-')),
+                              ]);
+                            }).toList(),
+                            showBottomBorder: true,
                           ),
-                        ],
-                        rows: List.generate(
-                          snapshot.data!.length,
-                          (index) {
-                            var data = snapshot.data![index];
-                            return DataRow(
-                                color: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  return Colors.white;
-                                }),
-                                cells: [
-                                  DataCell(Text(data.title)),
-                                  DataCell(Text(data.userId.toString())),
-                                ]);
-                          },
-                        ).toList(),
-                        showBottomBorder: true,
-                      ),
-                    ],
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
                   );
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                }
-                return const Center(
-                    child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))));
-              },
-            ),
-          ),
+                },
+              );
+            }
+          },
         ),
       ),
     );

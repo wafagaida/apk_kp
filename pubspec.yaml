@@ -72,11 +72,9 @@ flutter:
     - assets/images/logoSMK.png
     - assets/images/pattern.png
     - assets/images/homeIcon.png
-    - assets/images/iconHome.png
+    - assets/images/home1.png
     - assets/images/profileIcon.png
     - assets/images/profile1.png
-    - assets/images/settingIcon.png
-    - assets/images/setting1.png
     - assets/images/jadwal.png
     - assets/images/bayar.png
     - assets/images/transkip.png

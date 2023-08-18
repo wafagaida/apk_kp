@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lms/models/jadwal.dart';
 import 'package:http/http.dart' as http;
+import 'package:lms/network/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class JadwalScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class JadwalScreen extends StatefulWidget {
 Future<List<Jadwal>> fetchData(String userKdKelas) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   var user = pref.getString('user');
-  var url = Uri.parse('http://127.0.0.1:8000/api/jadwal/$userKdKelas');
+  var url = Uri.parse('$jadwalUrl/$userKdKelas');
   final response = await http.get(
     url,
     headers: {

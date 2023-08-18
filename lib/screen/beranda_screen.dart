@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/models/news.dart';
+import 'package:lms/network/constants.dart';
 import 'package:lms/routes/app_routes.dart';
 import 'package:lms/screen/beranda_screen_widget.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +48,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
 
   //  get data pengumuman
   Future<List<News>> fetchData() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/news');
+    var url = Uri.parse(newsUrl);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
