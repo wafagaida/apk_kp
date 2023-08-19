@@ -193,8 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
           GestureDetector(
             onTap: () {
               GoRouter.of(context).goNamed(
-                AppRoutes.ubahPass,
-                // extra: User.dummy(),
+                AppRoutes.ubahPass
               );
             },
             child: Container(
@@ -216,7 +215,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Flexible(
                     child: Row(
                       children: [
-                        // Icon(Icons.edit_rounded),
                         SizedBox(width: 8),
                         Flexible(
                           child: Text(
@@ -235,10 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
-              // GoRouter.of(context).goNamed(
-              //   AppRoutes.jadwal,
-              // extra: User.dummy(),
-              // );
+              GoRouter.of(context).goNamed(AppRoutes.tentang);
             },
             child: Container(
               padding: const EdgeInsets.all(12),

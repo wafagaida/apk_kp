@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lms/screen/about_screen.dart';
 import 'package:lms/screen/bayar_screen.dart';
 import 'package:lms/screen/home_screen.dart';
 import 'package:lms/screen/jadwal_screen.dart';
@@ -22,51 +23,28 @@ class AppRoutes {
   static const String news = "news";
   static const String ubahPass = "ubahPass";
   static const String panduan = "panduan";
+  static const String tentang = "tentang";
   static const String rekap = "rekap";
   static const String smtNilai = "smtNilai";
 
   static Page _loginScreenBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: LoginScreen(),
-    );
+    return const MaterialPage(child: LoginScreen());
   }
 
   static Page _homeScreenBuilder(BuildContext context, GoRouterState state) {
-    // late User user;
-    // if (state.extra != null && state.extra is User) {
-    //   user = state.extra as User;
-    // } else {
-    //   user = User.dummy();
-    // }
-    return const MaterialPage(
-      child: HomeScreen(),
-    );
+    return const MaterialPage(child: HomeScreen());
   }
 
   static Page _loadingBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: Loading(),
-    );
+    return const MaterialPage(child: Loading());
   }
 
   static Page _profileScreenBuilder(BuildContext context, GoRouterState state) {
-    // late User user;
-    // if (state.extra != null && state.extra is User) {
-    //   user = state.extra as User;
-    // } else {
-    //   // user = User.dummy();
-    // }
-    return const MaterialPage(
-      child: ProfileScreen(),
-    );
+    return const MaterialPage(child: ProfileScreen());
   }
 
   static Page _jadwalScreenBuilder(BuildContext context, GoRouterState state) {
-    // String id = state.pathParameters['kd_kelas'] ?? '0';
-    return const MaterialPage(
-      // child: JadwalScreen(kdKelas: id),
-      child: JadwalScreen(),
-    );
+    return const MaterialPage(child: JadwalScreen());
   }
 
   static Page _bayarScreenBuilder(BuildContext context, GoRouterState state) {
@@ -77,25 +55,18 @@ class AppRoutes {
 
   static Page _rekapNilaiScreenBuilder(
       BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: RekapNilaiScreen(),
-    );
+    return const MaterialPage(child: RekapNilaiScreen());
   }
 
   static Page _smtNilaiScreenBuilder(
       BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: RekapNilaiScreen(),
-    );
+    return const MaterialPage(child: SmtNilaiScreen());
   }
 
   static Page _newsScreenBuilder(BuildContext context, GoRouterState state) {
     String id = state.pathParameters['id'] ?? '0';
     return MaterialPage(
-      child: NewsScreen(
-        // news: state.extra! as News,
-        id: int.parse(id),
-      ),
+      child: NewsScreen(id: int.parse(id)),
     );
   }
 
@@ -125,9 +96,11 @@ class AppRoutes {
   // }
 
   static Page _panduanScreenBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: PanduanScreen(),
-    );
+    return const MaterialPage(child: PanduanScreen());
+  }
+
+  static Page _aboutScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(child: AboutScreen());
   }
 
   static final GoRouter goRouter = GoRouter(
@@ -189,6 +162,11 @@ class AppRoutes {
             name: news,
             path: "$news:id",
             pageBuilder: _newsScreenBuilder,
+          ),
+          GoRoute(
+            name: tentang,
+            path: "tentang",
+            pageBuilder: _aboutScreenBuilder,
           ),
         ],
       ),

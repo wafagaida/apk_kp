@@ -185,30 +185,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Kelas",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(
-                          data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/tempat.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
+                // const SizedBox(height: 20),
+                // const Text(
+                //   "Kelas",
+                //   style: TextStyle(fontSize: 16),
+                // ),
+                // const SizedBox(height: 6),
+                // Container(
+                //   color: Colors.white,
+                //   child: TextFormField(
+                //     enabled: false,
+                //     readOnly: true,
+                //     decoration: InputDecoration(
+                //       isDense: true,
+                //       label: Text(
+                //           data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
+                //       prefixIcon: const ImageIcon(
+                //         AssetImage('assets/images/tempat.png'),
+                //       ),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(4),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 const SizedBox(height: 20),
                 const Text(
                   "Jenis Kelamin",

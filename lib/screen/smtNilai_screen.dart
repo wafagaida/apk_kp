@@ -34,6 +34,7 @@ Future<List<Nilai>> fetchData(String userNis) async {
 
 class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
   String? userNis;
+  String? selectedSemester; // New variable
 
   @override
   void initState() {
@@ -47,13 +48,19 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
     var userData = jsonDecode(user!);
     userNis = userData['nis'];
 
-    setState(() {}); // Memanggil setState untuk memperbarui tampilan
+    setState(() {});
+  }
+
+  void onSemesterSelected(String semester) {
+    setState(() {
+      selectedSemester = semester;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     if (userNis == null) {
-      return const CircularProgressIndicator(); // Menampilkan loading jika userKdKelas belum tersedia
+      return const CircularProgressIndicator();
     }
     return Scaffold(
       appBar: AppBar(
@@ -62,12 +69,6 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
-        ),
-        leading: GestureDetector(
-          child: const ImageIcon(AssetImage('assets/images/back.png')),
-          onTap: () {
-            Navigator.pop(context);
-          },
         ),
         backgroundColor: const Color(0xFF0873A1),
       ),
@@ -102,90 +103,162 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                 nilaiBySmt.putIfAbsent(nilai.semester ?? '', () => []);
                 nilaiBySmt[nilai.semester]!.add(nilai);
               }
-              return ListView.builder(
-                itemCount: nilaiBySmt.length,
-                itemBuilder: (context, index) {
-                  String semester = nilaiBySmt.keys.toList()[index];
-                  List<Nilai> nilaiList = nilaiBySmt[semester]!;
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    elevation: 15,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+
+              List<String> semesters = nilaiBySmt.keys.toList();
+
+              return Column(
+                children: [
+                  IntrinsicWidth(
+                    child: Row(
                       children: [
-                        const SizedBox(height: 15),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            "X - Semester $semester",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                        const Text(
+                          'Pilih Semester:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(width: 110),
+                        Container(
+                          // margin: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              menuMaxHeight: 250,
+                              borderRadius: BorderRadius.circular(15),
+                              iconEnabledColor: Colors.black,
+                              value: selectedSemester,
+                              hint: const Text('Semester'),
+                              onChanged: (String? newValue) {
+                                onSemesterSelected(newValue!);
+                              },
+                              items: semesters.map((semester) {
+                                return DropdownMenuItem<String>(
+                                  value: semester,
+                                  child: Text("Semester $semester"),
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: DataTable(
-                            // ignore: deprecated_member_use
-                            dataRowHeight: 30,
-                            border: const TableBorder(
-                              bottom: BorderSide(color: Color(0xFF0873A1), width: 1),
-                              horizontalInside:
-                                  BorderSide(color: Color(0xFF0873A1), width: 1),
-                            ),
-                            columns: const [
-                              DataColumn(
-                                label: Text(
-                                  'No',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Mata Pelajaran',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Nilai',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                            rows: nilaiList.map((nilai) {
-                              final index = nilaiList.indexOf(nilai);
-                              return DataRow(cells: [
-                                DataCell(Text('${index + 1}')),
-                                DataCell(Text(nilai.mapel?.namaMapel ?? '')),
-                                DataCell(Text(nilai.nilai ?? '-')),
-                              ]);
-                            }).toList(),
-                            showBottomBorder: true,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
                       ],
                     ),
-                  );
-                },
+                  ),
+                  selectedSemester == null
+                      ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Text(
+                              "Pilih semester untuk melihat nilai.",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            itemCount: nilaiBySmt.length,
+                            itemBuilder: (context, index) {
+                              String semester = semesters[index];
+                              if (selectedSemester != null &&
+                                  selectedSemester != semester) {
+                                return const SizedBox
+                                    .shrink(); // Hide other semesters
+                              }
+                              List<Nilai> nilaiList = nilaiBySmt[semester]!;
+                              return Card(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                elevation: 15,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 15),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: Text(
+                                        "X - Semester $semester",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: DataTable(
+                                        dataRowHeight: 30,
+                                        border: const TableBorder(
+                                          bottom: BorderSide(
+                                              color: Color(0xFF0873A1),
+                                              width: 1),
+                                          horizontalInside: BorderSide(
+                                              color: Color(0xFF0873A1),
+                                              width: 1),
+                                        ),
+                                        columns: const [
+                                          DataColumn(
+                                            label: Text(
+                                              'No',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Text(
+                                              'Mata Pelajaran',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Text(
+                                              'Nilai',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                        rows: nilaiList.map((nilai) {
+                                          final index =
+                                              nilaiList.indexOf(nilai);
+                                          return DataRow(cells: [
+                                            DataCell(Text('${index + 1}')),
+                                            DataCell(Text(
+                                                nilai.mapel?.namaMapel ?? '')),
+                                            DataCell(Text(nilai.nilai ?? '-')),
+                                          ]);
+                                        }).toList(),
+                                        showBottomBorder: true,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ],
               );
             }
           },
