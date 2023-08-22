@@ -130,11 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
           items: const [
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/homeIcon.png')),
-                activeIcon: ImageIcon(AssetImage('assets/images/home1.png')),
                 label: "Beranda"),
             BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage('assets/images/profileIcon.png')),
-                activeIcon: ImageIcon(AssetImage('assets/images/profile1.png')),
                 label: "Profil"),
           ],
         ),

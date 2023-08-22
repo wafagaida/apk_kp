@@ -8,6 +8,7 @@ const postUrl = '$baseUrl/posts';
 const newsUrl = '$baseUrl/news';
 const jadwalUrl = '$baseUrl/jadwal';
 const nilaiUrl = '$baseUrl/nilai';
+const bayarUrl = '$baseUrl/bayar';
 
 const serverError = 'Server Error';
 const unauthorized = 'Unauthorized';

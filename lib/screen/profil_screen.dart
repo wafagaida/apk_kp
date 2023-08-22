@@ -16,8 +16,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   User? data;
+  bool isLoading = true;
 
-  bool loading = true;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController txtNamaController = TextEditingController();
 
@@ -28,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (userJson.isNotEmpty) {
       setState(() {
         data = User.fromJson(jsonDecode(userJson));
+        isLoading = false;
       });
     }
   }
@@ -61,274 +62,291 @@ class _ProfileScreenState extends State<ProfileScreen> {
             opacity: 1,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
-          ), color: Colors.white,
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 35),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                const Text(
-                  "Nama Lengkap",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.nama ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/nama.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "NIS",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.nis?.toString() ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/nis.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "NIK",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.nik ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/nis.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Tingkat",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(
-                          data?.tingkat ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/kelas.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Jurusan",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.jurusan ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jurusan.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                // const SizedBox(height: 20),
-                // const Text(
-                //   "Kelas",
-                //   style: TextStyle(fontSize: 16),
-                // ),
-                // const SizedBox(height: 6),
-                // Container(
-                //   color: Colors.white,
-                //   child: TextFormField(
-                //     enabled: false,
-                //     readOnly: true,
-                //     decoration: InputDecoration(
-                //       isDense: true,
-                //       label: Text(
-                //           data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
-                //       prefixIcon: const ImageIcon(
-                //         AssetImage('assets/images/tempat.png'),
-                //       ),
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(4),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Jenis Kelamin",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.jenisKelamin ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jk.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Tanggal Lahir",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.tanggalLahir ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/tl.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Alamat",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.alamat ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/alamat.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "No. Telpon",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.noTlp ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/noHp.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Tahun Masuk",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  color: Colors.white,
-                  child: TextFormField(
-                    enabled: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      label: Text(data?.tahunMasuk ?? 'Tidak ada keterangan'),
-                      prefixIcon: const ImageIcon(
-                        AssetImage('assets/images/jurusan.png'),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
           ),
+          color: Colors.white,
         ),
+        child:
+            isLoading // Tampilkan CircularProgressIndicator jika isLoading = true
+                ? const Center(
+                    child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
+                  )
+                : SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Nama Lengkap",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label:
+                                    Text(data?.nama ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/nama.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "NIS",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(data?.nis?.toString() ??
+                                    'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/nis.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "NIK",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label:
+                                    Text(data?.nik ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/nis.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Tingkat",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(
+                                    data?.tingkat ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/kelas.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Jurusan",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(
+                                    data?.jurusan ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/jurusan.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // const SizedBox(height: 20),
+                          // const Text(
+                          //   "Kelas",
+                          //   style: TextStyle(fontSize: 16),
+                          // ),
+                          // const SizedBox(height: 6),
+                          // Container(
+                          //   color: Colors.white,
+                          //   child: TextFormField(
+                          //     enabled: false,
+                          //     readOnly: true,
+                          //     decoration: InputDecoration(
+                          //       isDense: true,
+                          //       label: Text(
+                          //           data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
+                          //       prefixIcon: const ImageIcon(
+                          //         AssetImage('assets/images/tempat.png'),
+                          //       ),
+                          //       border: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.circular(4),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Jenis Kelamin",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(data?.jenisKelamin ??
+                                    'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/jk.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Tanggal Lahir",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(data?.tanggalLahir ??
+                                    'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/tl.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Alamat",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(
+                                    data?.alamat ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/alamat.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "No. Telpon",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label:
+                                    Text(data?.noTlp ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/noHp.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Tahun Masuk",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 6),
+                          Container(
+                            color: Colors.white,
+                            child: TextFormField(
+                              enabled: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                label: Text(
+                                    data?.tahunMasuk ?? 'Tidak ada keterangan'),
+                                prefixIcon: const ImageIcon(
+                                  AssetImage('assets/images/jurusan.png'),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ),
       ),
     );
   }
