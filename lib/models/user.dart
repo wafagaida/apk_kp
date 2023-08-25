@@ -1,7 +1,7 @@
 import 'kelas.dart';
 
 class User {
-  String? nis;
+  int? nis;
   String? nik;
   String? nama;
   String? jenisKelamin;
@@ -73,79 +73,7 @@ class User {
   //   return data;
   // }
 }
-// class User {
-//   int? id;
-//   String? username;
-//   String? password;
-//   String? nis;
-//   String? nik;
-//   String? nama;
-//   // String? kdKelas;
-//   Kelas? kelas;
-//   String? jurusan;
-//   String? tingkat;
-//   String? jenisKelamin;
-//   String? tanggalLahir;
-//   String? tahunMasuk;
-//   String? noTlp;
-//   String? alamat;
-//   // String remember_token;
 
-//   User({
-//      this.id,
-//      this.username,
-//      this.password,
-//      this.nis,
-//      this.nik,
-//      this.nama,
-//      this.jenisKelamin,
-//     //  this.kdKelas,
-//      this.kelas,
-//      this.jurusan,
-//      this.tingkat,
-//      this.noTlp,
-//      this.alamat,
-//      this.tanggalLahir,
-//      this.tahunMasuk,
-
-//     // required this.remember_token,
-//   });
-
-//    User.fromJson(Map<String, dynamic> json) {
-//       id = json['users']['id'];
-//       username = json['users']['username'];
-//       password = json['users']['password'];
-//       nis= json['users']['nis'];
-//       nik= json['users']['nik'];
-//       nama= json['users']['nama'];
-//       jenisKelamin= json['users']['jenis_kelamin'];
-//       tanggalLahir= json['users']['tanggal_lahir'];
-//       tahunMasuk= json['users']['tahun_masuk'];
-//       // kdKelas: json['users']['kd_kelas'],
-//       kelas = json['kelas'] != null ? Kelas.fromJson(json['kelas']) : null;
-//       jurusan = json['users']['jurusan'];
-//       tingkat = json['users']['tingkat'];
-//       noTlp = json['users']['no_tlp'];
-//       alamat = json['users']['alamat'];
-//       // remember_token: json['remember_token'],
-//   }
-//   // Map<String, dynamic> toJson() {
-//   //   final Map<String, dynamic> data = <String, dynamic>{};
-//   //   data['id'] = id;
-//   //   data['username'] = username;
-//   //   data['password'] = password;
-//   //   data['nis'] = nis;
-//   //   data['nik'] = nik;
-//   //   data['nama'] = nama;
-//   //   data['jenis_kelamin'] = jenisKelamin;
-//   //   data['kelas'] = kelas;
-//   //   data['jurusan'] = jurusan;
-//   //   data['alamat'] = alamat;
-//   //   data['tanggal_lahir'] = tanggalLahir;
-//   //   data['no_tlp'] = noTlp;
-//   //   data['tahun_masuk'] = tahunMasuk;
-//   //   return data;
-//   // }
 
 // // factory User.fromMap(Map<String, dynamic> map) {
 // //     return User(

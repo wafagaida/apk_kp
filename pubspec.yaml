@@ -43,6 +43,7 @@ dependencies:
   rflutter_alert: ^2.0.7
   provider: ^6.0.5
   cached_network_image: ^3.2.3
+  intl: ^0.18.1
   # flutter_secure_storage: ^8.0.0
 
 dev_dependencies:

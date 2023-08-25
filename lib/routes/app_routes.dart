@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lms/screen/about_screen.dart';
 import 'package:lms/screen/bayar_screen.dart';
 import 'package:lms/screen/home_screen.dart';
 import 'package:lms/screen/jadwal_screen.dart';
@@ -23,7 +22,6 @@ class AppRoutes {
   static const String news = "news";
   static const String ubahPass = "ubahPass";
   static const String panduan = "panduan";
-  static const String tentang = "tentang";
   static const String rekap = "rekap";
   static const String smtNilai = "smtNilai";
 
@@ -99,10 +97,6 @@ class AppRoutes {
     return const MaterialPage(child: PanduanScreen());
   }
 
-  static Page _aboutScreenBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(child: AboutScreen());
-  }
-
   static final GoRouter goRouter = GoRouter(
     initialLocation: "/login",
     debugLogDiagnostics: true,
@@ -163,11 +157,7 @@ class AppRoutes {
             path: "$news:id",
             pageBuilder: _newsScreenBuilder,
           ),
-          GoRoute(
-            name: tentang,
-            path: "tentang",
-            pageBuilder: _aboutScreenBuilder,
-          ),
+          
         ],
       ),
     ],

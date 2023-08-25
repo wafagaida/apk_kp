@@ -46,7 +46,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = pref.getString('user');
     var userData = jsonDecode(user!);
-    userNis = userData['nis'];
+    userNis = userData['nis'].toString();
 
     setState(() {});
   }
@@ -65,7 +65,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Rekapitulasi Nilai",
+          "Nilai Sementara",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -75,7 +75,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            opacity: 1,
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),
@@ -108,8 +108,10 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
 
               return Column(
                 children: [
-                  IntrinsicWidth(
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
                           'Pilih Semester:',
@@ -118,7 +120,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                             fontSize: 16,
                           ),
                         ),
-                        const SizedBox(width: 110),
+                        // const SizedBox(width: 110),
                         Container(
                           // margin: const EdgeInsets.symmetric(horizontal: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 10),

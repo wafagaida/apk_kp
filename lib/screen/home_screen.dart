@@ -190,9 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           GestureDetector(
             onTap: () {
-              GoRouter.of(context).goNamed(
-                AppRoutes.ubahPass
-              );
+              GoRouter.of(context).goNamed(AppRoutes.ubahPass);
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -231,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
-              GoRouter.of(context).goNamed(AppRoutes.tentang);
+              _showAboutDialog();
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -271,40 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("Yakin keluar?"),
-                  content:
-                      const Text("Akun anda akan keluar dari aplikasi ini"),
-                  actions: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        elevation: 2,
-                        backgroundColor: Colors.red,
-                      ),
-                      onPressed: () {
-                        logout();
-                      },
-                      child: const Text("Ya"),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        elevation: 2,
-                        backgroundColor: const Color(0xFF0873A1),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Tidak"),
-                    ),
-                  ],
-                ),
-              );
+              _showLogoutDialog();
             },
             child: Container(
               padding: const EdgeInsets.all(12),
@@ -342,6 +307,73 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+
+  void _showAboutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          icon: const Icon(
+            Icons.info_outline_rounded,
+            size: 40,
+          ),
+          iconColor: const Color(0xFF0873A1),
+          content: const Text(
+              "Sistem Informasi SMK Plus Sukaraja merupakan aplikasi berbasis Mobile Apps yang mendukung dalam mendapat informasi sekolah."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Kembali",
+                style: TextStyle(
+                  color: Color(0xFF0873A1),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Yakin keluar?"),
+        content: const Text("Akun anda akan keluar dari aplikasi ini"),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              elevation: 2,
+              backgroundColor: Colors.red,
+            ),
+            onPressed: () {
+              logout();
+            },
+            child: const Text("Ya"),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              elevation: 2,
+              backgroundColor: const Color(0xFF0873A1),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Tidak"),
+          ),
         ],
       ),
     );

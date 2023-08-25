@@ -26,9 +26,18 @@ class _PanduanScreenState extends State<PanduanScreen> {
         ),
         backgroundColor: const Color(0xFF0873A1),
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12,horizontal: 12),
-        child: Text("Silahkan bayar di bank lah"),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            opacity: 0.5,
+            image: AssetImage('assets/images/pattern.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12,horizontal: 12),
+          child: Text("Silahkan bayar di bank lah"),
+        ),
       ),
     );
   }

@@ -4,7 +4,7 @@ class Bayar {
   String? nis;
   String? namaBayar;
   String? bulan;
-  String? tahun;
+  String? semester;
   int? nominal;
   int? jumlahBayar;
   String? tglBayar;
@@ -15,7 +15,7 @@ class Bayar {
       {this.nis,
       this.namaBayar,
       this.bulan,
-      this.tahun,
+      this.semester,
       this.nominal,
       this.jumlahBayar,
       this.tglBayar,
@@ -26,7 +26,7 @@ class Bayar {
     nis = json['nis'];
     namaBayar = json['nama_bayar'];
     bulan = json['bulan'];
-    tahun = json['tahun'];
+    semester = json['semester'];
     nominal = json['nominal'];
     jumlahBayar = json['jumlah_bayar'];
     tglBayar = json['tgl_bayar'];

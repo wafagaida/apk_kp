@@ -41,13 +41,13 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
     getUserData();
   }
 
-  void getUserData() async {
+ void getUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = pref.getString('user');
     var userData = jsonDecode(user!);
-    userNis = userData['nis'];
+    userNis = userData['nis'].toString();
 
-    setState(() {}); // Memanggil setState untuk memperbarui tampilan
+    setState(() {});
   }
 
   @override
@@ -74,7 +74,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            opacity: 1,
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),
@@ -134,9 +134,10 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                             // ignore: deprecated_member_use
                             dataRowHeight: 30,
                             border: const TableBorder(
-                              bottom: BorderSide(color: Color(0xFF0873A1), width: 1),
-                              horizontalInside:
-                                  BorderSide(color: Color(0xFF0873A1), width: 1),
+                              bottom: BorderSide(
+                                  color: Color(0xFF0873A1), width: 1),
+                              horizontalInside: BorderSide(
+                                  color: Color(0xFF0873A1), width: 1),
                             ),
                             columns: const [
                               DataColumn(

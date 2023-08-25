@@ -67,7 +67,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            opacity: 1,
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),
