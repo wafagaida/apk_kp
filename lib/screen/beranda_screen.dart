@@ -174,7 +174,8 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                           child: AspectRatio(
                                             aspectRatio: 1 / 1,
                                             child: Image.network(
-                                              news.image ?? '',
+                                              '$fotoUrl/${news.image}',
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),

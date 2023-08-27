@@ -21,15 +21,17 @@ class Jadwal {
       this.mapel,
       this.kelas});
 
-  Jadwal.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    kdMapel = json['kd_mapel'];
-    hari = json['hari'];
-    jam = json['jam'];
-    kdKelas = json['kd_kelas'];
-    tingkat = json['tingkat'];
-    mapel = json['mapel'] != null ? Mapel.fromJson(json['mapel']) : null;
-    kelas = json['kelas'] != null ? Kelas.fromJson(json['kelas']) : null;
+  factory Jadwal.fromJson(Map<String, dynamic> json) {
+    return Jadwal(
+      id: json['id'],
+      kdMapel: json['kd_mapel'], 
+      hari: json['hari'],
+      jam: json['jam'],
+      kdKelas: json['kd_kelas'],
+      tingkat: json['tingkat'],
+      mapel: json['mapel'] != null ? Mapel.fromJson(json['mapel']) : null,
+      kelas: json['kelas'] != null ? Kelas.fromJson(json['kelas']) : null,
+    );
   }
 
   // Map<String, dynamic> toJson() {

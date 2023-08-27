@@ -1,7 +1,7 @@
 class Mapel {
-  String? kdMapel;
-  String? namaMapel;
-  String? namaGuru;
+  final String? kdMapel;
+  final String? namaMapel;
+  final String? namaGuru;
 
   Mapel({
     this.kdMapel,
@@ -9,11 +9,12 @@ class Mapel {
     this.namaGuru,
   });
 
-  Mapel.fromJson(Map<String, dynamic> json) {
-    kdMapel = json['kd_mapel'];
-    namaMapel = json['nama_mapel'];
-    namaGuru = json['nama_guru'];
-  }
+  factory Mapel.fromJson(Map<String, dynamic> json) {
+    return Mapel(
+    kdMapel: json['kd_mapel'].toString(), 
+    namaMapel : json['nama_mapel'].toString(),
+    namaGuru : json['nama_guru'].toString(),
+  );}
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

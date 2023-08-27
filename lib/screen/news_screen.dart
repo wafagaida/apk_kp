@@ -56,6 +56,7 @@ class _NewsScreenState extends State<NewsScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
+            opacity: 0.5,
             image: AssetImage('assets/images/pattern.png'),
             fit: BoxFit.cover,
           ),
@@ -72,48 +73,47 @@ class _NewsScreenState extends State<NewsScreen> {
               return Text('${snapshot.error}');
             } else if (snapshot.hasData) {
               final News news = snapshot.data!;
-              return Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Expanded(
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: '${news.image}',
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              news.title ?? '',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                              textAlign: TextAlign.center,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl:
+                          '$fotoUrl/${news.image}',
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(valueColor:
+                          AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            news.title ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              news.content ?? '',
-                              style: const TextStyle(fontSize: 16),
-                              textAlign: TextAlign.justify,
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            news.content ?? '',
+                            style: const TextStyle(fontSize: 16),
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             } else {
-              return const Text("No data available.");
+              return const Text("Tidak ada pengumuman.");
             }
           },
         ),

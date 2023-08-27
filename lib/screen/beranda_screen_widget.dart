@@ -450,6 +450,7 @@ class CardMenu extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 60),
                           ],
                         ),
                       );

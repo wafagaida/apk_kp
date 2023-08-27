@@ -10,10 +10,11 @@ import 'package:lms/screen/panduan_screen.dart';
 import 'package:lms/screen/profil_screen.dart';
 import 'package:lms/screen/rekapNilai_screen.dart';
 import 'package:lms/screen/smtNilai_screen.dart';
+import 'package:lms/screen/splash_screen.dart';
 import 'package:lms/screen/ubahpass_screen.dart';
 
 class AppRoutes {
-  static const String loading = "loading";
+  static const String splash = "splash";
   static const String login = "login";
   static const String home = "home";
   static const String profile = "profile";
@@ -33,8 +34,8 @@ class AppRoutes {
     return const MaterialPage(child: HomeScreen());
   }
 
-  static Page _loadingBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(child: Loading());
+  static Page _splashScreenBuilder(BuildContext context, GoRouterState state) {
+    return const MaterialPage(child: SplashScreen());
   }
 
   static Page _profileScreenBuilder(BuildContext context, GoRouterState state) {
@@ -46,9 +47,7 @@ class AppRoutes {
   }
 
   static Page _bayarScreenBuilder(BuildContext context, GoRouterState state) {
-    return const MaterialPage(
-      child: BayarScreen(),
-    );
+    return const MaterialPage(child: BayarScreen());
   }
 
   static Page _rekapNilaiScreenBuilder(
@@ -98,14 +97,14 @@ class AppRoutes {
   }
 
   static final GoRouter goRouter = GoRouter(
-    initialLocation: "/login",
+    initialLocation: "/splash",
     debugLogDiagnostics: true,
     routerNeglect: true,
     routes: [
       GoRoute(
-        name: loading,
-        path: "/loading",
-        pageBuilder: _loadingBuilder,
+        name: splash,
+        path: "/splash",
+        pageBuilder: _splashScreenBuilder,
       ),
       GoRoute(
         name: login,
@@ -157,7 +156,6 @@ class AppRoutes {
             path: "$news:id",
             pageBuilder: _newsScreenBuilder,
           ),
-          
         ],
       ),
     ],

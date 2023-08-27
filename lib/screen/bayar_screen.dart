@@ -378,7 +378,10 @@ class _BayarScreenState extends State<BayarScreen> {
                                         const Image(
                                             image: AssetImage(
                                                 'assets/images/icis.png')),
-                                        Row(
+                                        const SizedBox(width: 5),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               bayar.namaBayar ??
@@ -388,7 +391,6 @@ class _BayarScreenState extends State<BayarScreen> {
                                                 fontSize: 18,
                                               ),
                                             ),
-                                            const SizedBox(width: 5),
                                             Text("(${bayar.bulan})"),
                                           ],
                                         ),
