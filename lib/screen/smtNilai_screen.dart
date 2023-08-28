@@ -183,7 +183,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                               return Card(
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
-                                elevation: 10,
+                                elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),

@@ -111,7 +111,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                   return Card(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10),
-                    elevation: 10,
+                    elevation: 5,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
