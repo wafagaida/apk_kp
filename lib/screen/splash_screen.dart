@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/routes/app_routes.dart';
+
+import '../network/api_user.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,15 +28,31 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Future.delayed(
       const Duration(seconds: 3),
-      () {
-        GoRouter.of(context).goNamed(
-          AppRoutes.login,
-          extra: null,
-        );
+      () async {
+        // Mark the callback as async
+        bool isLoggedIn =
+            await checkIfUserIsLoggedIn();
+
+        if (isLoggedIn) {
+          GoRouter.of(context).goNamed(
+            AppRoutes.home,
+            extra: null,
+          );
+        } else {
+          GoRouter.of(context).goNamed(
+            AppRoutes.login,
+            extra: null,
+          );
+        }
       },
     );
 
     super.initState();
+  }
+
+  Future<bool> checkIfUserIsLoggedIn() async {
+    var token = await Network().getToken(); // Await the Future value
+    return token != null && token.isNotEmpty;
   }
 
   @override
@@ -55,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
               const Text(
                 "Sistem Informasi Siswa",
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: 17,
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),
@@ -63,14 +83,14 @@ class _SplashScreenState extends State<SplashScreen> {
               const Text(
                 "SMK Plus Sukaraja",
                 style: TextStyle(
-                  fontSize: 31,
+                  fontSize: 23,
                   color: Colors.white,
                 ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(
                     vertical: 20,
-                    horizontal: MediaQuery.of(context).size.width / 5),
+                    horizontal: MediaQuery.of(context).size.width/ 3.6),
                 child: const LinearProgressIndicator(
                   color: Colors.white,
                   // valueColor: AlwaysStoppedAnimation(Colors.white),

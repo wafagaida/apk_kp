@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -71,6 +73,12 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
           ),
         ),
         backgroundColor: const Color(0xFF0873A1),
+        leading: GestureDetector(
+          child: const ImageIcon(AssetImage('assets/images/back.png')),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -124,27 +132,25 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                         Container(
                           // margin: const EdgeInsets.symmetric(horizontal: 20),
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
+                          // decoration: BoxDecoration(
+                          //   color: Colors.white,
+                          //   borderRadius: BorderRadius.circular(15),
+                          // ),
+                          child: DropdownButton(
+                            menuMaxHeight: 250,
                             borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              menuMaxHeight: 250,
-                              borderRadius: BorderRadius.circular(15),
-                              iconEnabledColor: Colors.black,
-                              value: selectedSemester,
-                              hint: const Text('Semester'),
-                              onChanged: (String? newValue) {
-                                onSemesterSelected(newValue!);
-                              },
-                              items: semesters.map((semester) {
-                                return DropdownMenuItem<String>(
-                                  value: semester,
-                                  child: Text("Semester $semester"),
-                                );
-                              }).toList(),
-                            ),
+                            iconEnabledColor: Colors.black,
+                            value: selectedSemester,
+                            hint: const Text('Semester'),
+                            onChanged: (String? newValue) {
+                              onSemesterSelected(newValue!);
+                            },
+                            items: semesters.map((semester) {
+                              return DropdownMenuItem<String>(
+                                value: semester,
+                                child: Text("Semester $semester"),
+                              );
+                            }).toList(),
                           ),
                         ),
                       ],
@@ -177,7 +183,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                               return Card(
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
-                                elevation: 15,
+                                elevation: 10,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
@@ -189,25 +195,19 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
                                       child: Text(
-                                        "X - Semester $semester",
+                                        "Semester $semester",
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
                                       ),
                                     ),
+                                    const SizedBox(height: 10),
                                     Align(
                                       alignment: Alignment.center,
                                       child: DataTable(
                                         dataRowHeight: 30,
-                                        border: const TableBorder(
-                                          bottom: BorderSide(
-                                              color: Color(0xFF0873A1),
-                                              width: 1),
-                                          horizontalInside: BorderSide(
-                                              color: Color(0xFF0873A1),
-                                              width: 1),
-                                        ),
+                                        headingRowHeight: 35,
                                         columns: const [
                                           DataColumn(
                                             label: Text(

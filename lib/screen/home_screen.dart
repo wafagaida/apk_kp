@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -357,8 +359,9 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 2,
               backgroundColor: Colors.red,
             ),
-            onPressed: () {
+            onPressed: () async {
               logout();
+              Navigator.pop(context);
             },
             child: const Text("Ya"),
           ),
@@ -385,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      var res = await Network().getData('/logout');
+      var res = await Network().logout('/logout'); // Send logout request
       var body = json.decode(res.body);
 
       if (body["success"] == true) {
@@ -393,36 +396,37 @@ class _HomeScreenState extends State<HomeScreen> {
         await pref.remove('user');
         await pref.remove('token');
 
-        // ignore: use_build_context_synchronously
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            Navigator.of(context).pop(true);
+            GoRouter.of(context).goNamed('login');
+          },
+        );
+
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (context) {
-            Future.delayed(
-              const Duration(seconds: 2),
-              () {
-                Navigator.of(context).pop(true);
-                GoRouter.of(context)
-                    .goNamed('login'); // Navigate to login screen
-              },
-            );
             return const AlertDialog(
               title: Text(
                 "Berhasil Keluar",
                 textAlign: TextAlign.center,
               ),
-              content: CircularProgressIndicator(),
+              icon: Icon(CupertinoIcons.checkmark_alt_circle),
+              iconColor: Color(0xFF0873A1),
               insetPadding: EdgeInsets.symmetric(horizontal: 70),
             );
           },
         );
       } else {
-        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: const Text("Ada Kesalahan"),
+              icon: const Icon(CupertinoIcons.checkmark_alt_circle),
+              iconColor:Colors.red,
               actions: [
                 ElevatedButton(
                   onPressed: () {
@@ -430,7 +434,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6)),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
                     elevation: 2,
                     backgroundColor: const Color(0xFF0873A1),
                   ),
@@ -454,7 +459,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6)),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                   elevation: 2,
                   backgroundColor: const Color(0xFF0873A1),
                 ),

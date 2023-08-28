@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class _BayarScreenState extends State<BayarScreen> {
   List<Bayar> bayarList = [];
   bool isLoading = true;
   // final bool _isExpanded = false;
-  final List<ExpansionPanelItem> _expansionPanelItems = [];
+  final List<ExpansionTile> _expansionTileItems = [];
   List<String> semesterList = [];
   String? selectedSemester;
 
@@ -65,25 +67,34 @@ class _BayarScreenState extends State<BayarScreen> {
       semesterList =
           bayarList.map((bayar) => bayar.semester ?? '').toSet().toList();
 
-      _initializeExpansionPanelItems();
+      _initializeExpansionTileItems();
     } else {
       throw Exception('Gagal Menampilkan Pembayaran');
     }
   }
 
-  void _initializeExpansionPanelItems() {
-    _expansionPanelItems.clear(); // Clear existing items
+  void _initializeExpansionTileItems() {
+    _expansionTileItems.clear(); // Clear existing items
 
-    for (String semester in semesterList) {
-      final filteredTransactions = _filterTransactionsBySemester(semester);
+    if (selectedSemester != null) {
+      final filteredTransactions =
+          _filterTransactionsBySemester(selectedSemester!);
 
       final tableBody = DataTable(
-        columnSpacing: 20,
+        columnSpacing: 12,
         dataRowHeight: 30,
-        border: const TableBorder(
-          bottom: BorderSide(color: Color(0xFF0873A1), width: 1),
-          horizontalInside: BorderSide(color: Color(0xFF0873A1), width: 1),
+        headingRowHeight: 35,
+        headingTextStyle: const TextStyle(
+          color: Color(0xFF0873A1),
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Dosis',
+          fontSize: 16,
         ),
+        // dataRowColor: MaterialStateColor.resolveWith((states) => Colors.white),
+        // border: const TableBorder(
+        //   bottom: BorderSide(color: Color(0xFF0873A1), width: 2),
+        //   horizontalInside: BorderSide(color: Color(0xFF0873A1), width: 2),
+        // ),
         columns: const [
           DataColumn(label: Text('No.')),
           DataColumn(label: Text('Keterangan')),
@@ -93,7 +104,7 @@ class _BayarScreenState extends State<BayarScreen> {
           final index = filteredTransactions.indexOf(bayar);
 
           return DataRow(cells: [
-            DataCell(Text('${index + 1}')),
+            DataCell(Text('${index + 1}.')),
             DataCell(Row(
               children: [
                 Text(bayar.namaBayar ?? ''),
@@ -109,19 +120,29 @@ class _BayarScreenState extends State<BayarScreen> {
         showBottomBorder: true,
       );
 
-      final isExpanded = selectedSemester == semester;
+      // final isExpanded = selectedSemester == semester;
 
-      _expansionPanelItems.add(
-        ExpansionPanelItem(
-          headerText: 'Lihat Detail Pembayaran Semester $semester',
-          body: Column(
-            children: [
-              Container(
-                child: tableBody,
-              ),
-            ],
+      _expansionTileItems.add(
+        ExpansionTile(
+          title: Text(
+            'Lihat Detail Pembayaran Semester $selectedSemester',
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              color: Colors.black45,
+            ),
+            textAlign: TextAlign.right,
           ),
-          isExpanded: isExpanded,
+          // textColor: const Color(0xFF0873A1),
+          iconColor: Colors.black45,
+          collapsedIconColor: Colors.black45,
+          initiallyExpanded: false,
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: tableBody,
+            ),
+          ],
         ),
       );
     }
@@ -176,7 +197,7 @@ class _BayarScreenState extends State<BayarScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -184,43 +205,41 @@ class _BayarScreenState extends State<BayarScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Pilih Semester:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        'Pilih Semester:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        // color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          menuMaxHeight: 250,
-                          borderRadius: BorderRadius.circular(15),
-                          iconEnabledColor: Colors.black,
-                          hint: const Text('Semester'),
-                          value: selectedSemester,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedSemester = newValue;
-                              for (var item in _expansionPanelItems) {
-                                item.isExpanded =
-                                    item.headerText.contains(selectedSemester!);
-                              }
-                            });
-                          },
-                          items: semesterList
-                              .map<DropdownMenuItem<String>>((String semester) {
-                            return DropdownMenuItem<String>(
-                              value: semester,
-                              child: Text("Semester $semester"),
-                            );
-                          }).toList(),
-                        ),
+                      child: DropdownButton(
+                        menuMaxHeight: 250,
+                        borderRadius: BorderRadius.circular(15),
+                        iconEnabledColor: Colors.black,
+                        hint: const Text('Semester'),
+                        value: selectedSemester,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedSemester = newValue;
+                            _initializeExpansionTileItems(); // Call this method to update ExpansionTiles
+                          });
+                        },
+                        items: semesterList
+                            .map<DropdownMenuItem<String>>((String semester) {
+                          return DropdownMenuItem<String>(
+                            value: semester,
+                            child: Text("Semester $semester"),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ],
@@ -256,41 +275,14 @@ class _BayarScreenState extends State<BayarScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Rp. ${formatNumber(calculateOutstandingBalance(selectedSemester) as int)}',
+                        'Rp. ${formatNumber(calculateOutstandingBalance(selectedSemester).toInt())}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
                       ),
                       const SizedBox(height: 8),
-                      ExpansionPanelList(
-                        elevation: 1,
-                        // expandedHeaderPadding: const EdgeInsets.all(0),
-                        expansionCallback: (int index, bool isExpanded) {
-                          setState(() {
-                            _expansionPanelItems[index].isExpanded =
-                                !isExpanded;
-                          });
-                        },
-                        children: _expansionPanelItems
-                            .map<ExpansionPanel>((ExpansionPanelItem item) {
-                          return ExpansionPanel(
-                            headerBuilder:
-                                (BuildContext context, bool isExpanded) {
-                              return ListTile(
-                                title: Text(item.headerText),
-                              );
-                            },
-                            body: SingleChildScrollView(
-                              // Wrap the DataTable in SingleChildScrollView
-                              scrollDirection: Axis.horizontal,
-                              child: item.body,
-                            ),
-                            isExpanded: item.isExpanded,
-                          );
-                        }).toList(),
-                      ),
-                      // const SizedBox(height: 20),
+                      ..._expansionTileItems,
                     ],
                   ),
                 ),
@@ -335,12 +327,15 @@ class _BayarScreenState extends State<BayarScreen> {
                 //     ],
                 //   ),
                 // ),
-                const SizedBox(height: 15),
-                const Text(
-                  "Riwayat Transaksi",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    "Riwayat Transaksi",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -351,72 +346,75 @@ class _BayarScreenState extends State<BayarScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(
                                 Color(0xFF0873A1))),
                       )
-                    : Column(
-                        children: [
-                          if (bayarList.isEmpty)
-                            const Center(
-                              child: Text(
-                                "Belum ada data riwayat pembayaran",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          children: [
+                            if (bayarList.isEmpty)
+                              const Center(
+                                child: Text(
+                                  "Belum ada data riwayat pembayaran",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            )
-                          else
-                            for (var bayar in _filterTransactionsBySemester(
-                                selectedSemester))
-                              if (bayar.jumlahBayar != null &&
-                                  (selectedSemester == null ||
-                                      bayar.semester == selectedSemester))
-                                Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const Image(
-                                            image: AssetImage(
-                                                'assets/images/icis.png')),
-                                        const SizedBox(width: 5),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              bayar.namaBayar ??
-                                                  '', //nama_bayar
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            Text("(${bayar.bulan})"),
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Text(
-                                                'Rp. ${formatNumber(bayar.jumlahBayar ?? 0)}', //jumlah_bayar
+                              )
+                            else
+                              for (var bayar in _filterTransactionsBySemester(
+                                  selectedSemester))
+                                if (bayar.jumlahBayar != null &&
+                                    (selectedSemester == null ||
+                                        bayar.semester == selectedSemester))
+                                  Column(
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const Image(
+                                              image: AssetImage(
+                                                  'assets/images/icis.png')),
+                                          const SizedBox(width: 5),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                bayar.namaBayar ??
+                                                    '', //nama_bayar
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
                                                 ),
                                               ),
-                                            ),
-                                            Text(bayar.tglBayar ??
-                                                ''), //tgl_bayar
-                                          ],
-                                        ),
-                                        const SizedBox(width: 10),
-                                      ],
-                                    ),
-                                    const Divider(thickness: 1),
-                                  ],
-                                ),
-                        ],
+                                              Text("(${bayar.bulan})"),
+                                            ],
+                                          ),
+                                          const Spacer(),
+                                          Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.topCenter,
+                                                child: Text(
+                                                  'Rp. ${formatNumber(bayar.jumlahBayar ?? 0)}', //jumlah_bayar
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(bayar.tglBayar ??
+                                                  ''), //tgl_bayar
+                                            ],
+                                          ),
+                                          const SizedBox(width: 10),
+                                        ],
+                                      ),
+                                      const Divider(thickness: 1),
+                                    ],
+                                  ),
+                          ],
+                        ),
                       ),
                 const SizedBox(height: 20),
               ],
@@ -426,16 +424,4 @@ class _BayarScreenState extends State<BayarScreen> {
       ),
     );
   }
-}
-
-class ExpansionPanelItem {
-  ExpansionPanelItem({
-    required this.headerText,
-    required this.body,
-    this.isExpanded = false,
-  });
-
-  final String headerText;
-  final Widget body;
-  bool isExpanded;
 }

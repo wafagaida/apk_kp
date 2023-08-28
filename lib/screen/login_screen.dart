@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -42,32 +44,33 @@ class _LoginScreenState extends State<LoginScreen> {
     var response = await Network().auth(data, '/login');
     var body = json.decode(response.body);
 
-    // if (body["message"] == "success") {
     if (body["success"] == true) {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('token', json.encode(body['token']));
+      pref.setString('token', body['token']); // Save the token
       pref.setString('user', json.encode(body['user']));
-      if (!mounted) return;
+
+      Future.delayed(
+        const Duration(seconds: 1),
+        () {
+          Navigator.of(context).pop(true);
+          GoRouter.of(context).goNamed('home');
+        },
+      );
+
       showDialog(
         context: context,
         builder: (context) {
-          Future.delayed(
-            const Duration(seconds: 2),
-            () {
-              Navigator.of(context).pop(true);
-            },
-          );
           return const AlertDialog(
             title: Text(
               "Berhasil Masuk",
               textAlign: TextAlign.center,
             ),
-            icon: Icon(CupertinoIcons.heart),
+            icon: Icon(CupertinoIcons.checkmark_alt_circle),
+            iconColor: Color(0xFF0873A1),
             insetPadding: EdgeInsets.symmetric(horizontal: 70),
           );
         },
       );
-      GoRouter.of(context).goNamed('home');
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(_showMsg(

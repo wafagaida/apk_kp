@@ -92,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label:
-                                    Text(data?.nama ?? 'Tidak ada keterangan'),
+                                    Text(data?.nama ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nama.png'),
                                 ),
@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(data?.nis?.toString() ??
-                                    'Tidak ada keterangan'),
+                                    '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nis.png'),
                                 ),
@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label:
-                                    Text(data?.nik ?? 'Tidak ada keterangan'),
+                                    Text(data?.nik ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nis.png'),
                                 ),
@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(
-                                    data?.tingkat ?? 'Tidak ada keterangan'),
+                                    data?.tingkat ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/kelas.png'),
                                 ),
@@ -188,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(
-                                    data?.jurusan ?? 'Tidak ada keterangan'),
+                                    data?.jurusan ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jurusan.png'),
                                 ),
@@ -198,30 +198,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          // const SizedBox(height: 20),
-                          // const Text(
-                          //   "Kelas",
-                          //   style: TextStyle(fontSize: 16),
-                          // ),
-                          // const SizedBox(height: 6),
-                          // Container(
-                          //   color: Colors.white,
-                          //   child: TextFormField(
-                          //     enabled: false,
-                          //     readOnly: true,
-                          //     decoration: InputDecoration(
-                          //       isDense: true,
-                          //       label: Text(
-                          //           data?.kelas?.namaKelas ?? 'Tidak ada keterangan'),
-                          //       prefixIcon: const ImageIcon(
-                          //         AssetImage('assets/images/tempat.png'),
-                          //       ),
-                          //       border: OutlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(4),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           const SizedBox(height: 20),
                           const Text(
                             "Jenis Kelamin",
@@ -236,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(data?.jenisKelamin ??
-                                    'Tidak ada keterangan'),
+                                    '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jk.png'),
                                 ),
@@ -260,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(data?.tanggalLahir ??
-                                    'Tidak ada keterangan'),
+                                    '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/tl.png'),
                                 ),
@@ -284,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(
-                                    data?.alamat ?? 'Tidak ada keterangan'),
+                                    data?.alamat ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/alamat.png'),
                                 ),
@@ -308,7 +284,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label:
-                                    Text(data?.noTlp ?? 'Tidak ada keterangan'),
+                                    Text(data?.noTlp ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/noHp.png'),
                                 ),
@@ -332,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 label: Text(
-                                    data?.tahunMasuk ?? 'Tidak ada keterangan'),
+                                    data?.tahunMasuk ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jurusan.png'),
                                 ),

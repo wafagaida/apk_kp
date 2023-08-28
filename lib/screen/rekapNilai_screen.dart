@@ -41,7 +41,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
     getUserData();
   }
 
- void getUserData() async {
+  void getUserData() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = pref.getString('user');
     var userData = jsonDecode(user!);
@@ -107,10 +107,11 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                 itemBuilder: (context, index) {
                   String semester = nilaiBySmt.keys.toList()[index];
                   List<Nilai> nilaiList = nilaiBySmt[semester]!;
+
                   return Card(
                     margin: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10),
-                    elevation: 15,
+                    elevation: 10,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -121,24 +122,20 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Text(
-                            "X - Semester $semester",
+                            "Semester $semester",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
                         ),
+                        const SizedBox(height: 10),
                         Align(
                           alignment: Alignment.center,
                           child: DataTable(
                             // ignore: deprecated_member_use
                             dataRowHeight: 30,
-                            border: const TableBorder(
-                              bottom: BorderSide(
-                                  color: Color(0xFF0873A1), width: 1),
-                              horizontalInside: BorderSide(
-                                  color: Color(0xFF0873A1), width: 1),
-                            ),
+                            headingRowHeight: 35,
                             columns: const [
                               DataColumn(
                                 label: Text(
@@ -182,7 +179,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                             showBottomBorder: true,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                       ],
                     ),
                   );

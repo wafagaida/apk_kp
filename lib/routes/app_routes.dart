@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:lms/screen/bayar_screen.dart';
 import 'package:lms/screen/home_screen.dart';
 import 'package:lms/screen/jadwal_screen.dart';
-import 'package:lms/screen/loading.dart';
 import 'package:lms/screen/login_screen.dart';
 import 'package:lms/screen/news_screen.dart';
 import 'package:lms/screen/panduan_screen.dart';

@@ -96,7 +96,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                     String hari = entry.key;
                     List<Jadwal> jadwalList = entry.value;
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
