@@ -1,6 +1,6 @@
 // static String baseUrl = 'https://story-api.dicoding.dev/v1';
-// const baseUrl = 'http://127.0.0.1:8000/api';
-const baseUrl = 'http://192.168.1.12:8000/api'; //hp
+const baseUrl = 'http://127.0.0.1:8000/api';
+// const baseUrl = 'http://192.168.1.12:8000/api'; //hp
 const loginUrl = '$baseUrl/login';
 const registerUrl = '$baseUrl/register';
 const logoutUrl = '$baseUrl/logout';
