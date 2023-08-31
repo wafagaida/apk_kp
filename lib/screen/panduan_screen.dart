@@ -160,6 +160,15 @@ class _PanduanScreenState extends State<PanduanScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 8),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  "Jika sudah bayar, KONFIRMASI ke bendahara.",
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
             ],
           ),
         ),

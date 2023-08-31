@@ -190,45 +190,45 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              GoRouter.of(context).goNamed(AppRoutes.ubahPass);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 0.2,
-                    blurRadius: 1.5,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: const Row(
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            "Ubah Password",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ImageIcon(AssetImage('assets/images/ubahPass.png')),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
+          // GestureDetector(
+          //   onTap: () {
+          //     GoRouter.of(context).goNamed(AppRoutes.ubahPass);
+          //   },
+          //   child: Container(
+          //     padding: const EdgeInsets.all(12),
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(8),
+          //       color: Colors.white,
+          //       boxShadow: [
+          //         BoxShadow(
+          //           color: Colors.black.withOpacity(0.2),
+          //           spreadRadius: 0.2,
+          //           blurRadius: 1.5,
+          //           offset: const Offset(0, 0),
+          //         ),
+          //       ],
+          //     ),
+          //     child: const Row(
+          //       children: [
+          //         Flexible(
+          //           child: Row(
+          //             children: [
+          //               SizedBox(width: 8),
+          //               Flexible(
+          //                 child: Text(
+          //                   "Ubah Password",
+          //                   style: TextStyle(fontWeight: FontWeight.bold),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //         ImageIcon(AssetImage('assets/images/ubahPass.png')),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(height: 16),
           GestureDetector(
             onTap: () {
               _showAboutDialog();
