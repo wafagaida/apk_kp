@@ -245,8 +245,14 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                               nilaiList.indexOf(nilai);
                                           return DataRow(cells: [
                                             DataCell(Text('${index + 1}')),
-                                            DataCell(Text(
-                                                nilai.mapel?.namaMapel ?? '')),
+                                            DataCell(
+                                              SizedBox(
+                                                width: 170,
+                                                child: Text(
+                                                    nilai.mapel?.namaMapel ??
+                                                        ''),
+                                              ),
+                                            ),
                                             DataCell(Text(nilai.nilai ?? '-')),
                                           ]);
                                         }).toList(),

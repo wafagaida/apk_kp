@@ -156,9 +156,26 @@ class _BerandaScreenState extends State<BerandaScreen> {
                         child: FutureBuilder<List<News>>(
                           future: fetchData(),
                           builder: (context, snapshot) {
-                            if (snapshot.hasData) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Color(0xFF0873A1)),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text(
+                                  'Terjadi kesalahan: ${snapshot.error}');
+                            } else {
+                              final List<News> newsList = snapshot.data ??
+                                  [];
+
+                              if (newsList.isEmpty) {
+                                return const Text(
+                                    'Tidak ada pengumuman yang tersedia saat ini.');
+                              }
+
                               return Column(
-                                children: snapshot.data!.map((news) {
+                                children: newsList.map((news) {
                                   return Padding(
                                     padding: const EdgeInsets.only(
                                       top: 5,
@@ -193,10 +210,11 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                       trailing: IconButton(
                                         onPressed: () {
                                           GoRouter.of(context).goNamed(
-                                              AppRoutes.news,
-                                              pathParameters: {
-                                                'id': news.id.toString()
-                                              });
+                                            AppRoutes.news,
+                                            pathParameters: {
+                                              'id': news.id.toString(),
+                                            },
+                                          );
                                         },
                                         icon: const Icon(Icons.open_in_new),
                                       ),
@@ -204,13 +222,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                   );
                                 }).toList(),
                               );
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
                             }
-                            return const Center(
-                                child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Color(0xFF0873A1))));
                           },
                         ),
                       ),

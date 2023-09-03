@@ -34,6 +34,7 @@ Future<List<Nilai>> fetchData(String userNis) async {
 
 class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
   String? userNis;
+  late Size size;
 
   @override
   void initState() {
@@ -136,6 +137,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                             // ignore: deprecated_member_use
                             dataRowHeight: 30,
                             headingRowHeight: 35,
+                            // columnSpacing: MediaQuery.of(context).size.width / (3 + 1),
                             columns: const [
                               DataColumn(
                                 label: Text(
@@ -172,7 +174,13 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                               final index = nilaiList.indexOf(nilai);
                               return DataRow(cells: [
                                 DataCell(Text('${index + 1}')),
-                                DataCell(Text(nilai.mapel?.namaMapel ?? '')),
+                                DataCell(
+                                  SizedBox(
+                                    width:
+                                        170,
+                                    child: Text(nilai.mapel?.namaMapel ?? ''),
+                                  ),
+                                ),
                                 DataCell(Text(nilai.nilai ?? '-')),
                               ]);
                             }).toList(),

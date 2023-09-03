@@ -81,7 +81,7 @@ class _BayarScreenState extends State<BayarScreen> {
           _filterTransactionsBySemester(selectedSemester!);
 
       final tableBody = DataTable(
-        columnSpacing: 20,
+        columnSpacing: 45,
         dataRowHeight: 30,
         headingRowHeight: 35,
         headingTextStyle: const TextStyle(

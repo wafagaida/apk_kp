@@ -144,7 +144,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                                       Row(
                                         children: [
                                           const ImageIcon(AssetImage(
-                                              'assets/images/tempat.png')),
+                                              'assets/images/nama.png')),
                                           const SizedBox(width: 8),
                                           // Text("Lapangan"),
                                           Text(jadwal.mapel?.namaGuru ?? ''),

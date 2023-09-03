@@ -35,141 +35,188 @@ class _PanduanScreenState extends State<PanduanScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-          child: Column(
-            children: [
-              // const SizedBox(height: 3),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  "Untuk pembayaran dibayar sampai tanggal 10 setiap bulannya. Pembayaran bisa dilakukan secara Tunai atau Non Tunai.",
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                elevation: 3,
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    Row(
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+            child: Column(
+              children: [
+                // const SizedBox(height: 3),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontFamily: 'Dosis',
+                      ),
                       children: [
-                        SizedBox(width: 12),
-                        Icon(
-                          CupertinoIcons.money_dollar_circle_fill,
-                          color: Color.fromARGB(255, 39, 129, 86),
-                          size: 28,
+                        TextSpan(
+                          text: "Untuk pembayaran dibayar sampai ",
                         ),
-                        SizedBox(width: 12),
-                        Text(
-                          "TUNAI / CASH",
+                        TextSpan(
+                          text: "Tanggal 10",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 22,
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              " setiap bulannya. Pembayaran bisa dilakukan secara Tunai atau Non Tunai.",
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  elevation: 5,
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(width: 12),
+                          Icon(
+                            CupertinoIcons.money_dollar_circle_fill,
                             color: Color.fromARGB(255, 39, 129, 86),
+                            size: 28,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "Pembayaran bisa dilakukan secara tunai/cash di Kampus SMK Plus Sukaraja dengan membawa buku iuran yang telah disediakan.",
-                        style: TextStyle(
-                            // fontWeight: FontWeight.bold,
-                            // fontSize: 16,
+                          SizedBox(width: 12),
+                          Text(
+                            "TUNAI / CASH",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: Color.fromARGB(255, 39, 129, 86),
                             ),
-                        textAlign: TextAlign.justify,
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                elevation: 3,
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        SizedBox(width: 12),
-                        Icon(
-                          CupertinoIcons.arrow_right_arrow_left_circle_fill,
-                          color: Color.fromARGB(255, 204, 163, 41),
-                          size: 28,
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "Pembayaran bisa dilakukan secara tunai/cash di Kampus SMK Plus Sukaraja dengan membawa buku iuran yang telah disediakan.",
+                          style: TextStyle(
+                              fontSize: 15,
+                              ),
+                          textAlign: TextAlign.justify,
                         ),
-                        SizedBox(width: 12),
-                        Text(
-                          "NON TUNAI / CASHLESS",
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  elevation: 5,
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(width: 12),
+                          Icon(
+                            CupertinoIcons.arrow_right_arrow_left_circle_fill,
+                            color: Color.fromARGB(255, 204, 163, 41),
+                            size: 28,
+                          ),
+                          SizedBox(width: 12),
+                          Text(
+                            "NON TUNAI / CASHLESS",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              color: Color.fromARGB(255, 204, 163, 41),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "Pembayaran bisa dilakukan secara non tunai/cashless via Bank BRI dengan No. Rekening berikut: ",
+                          style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      SizedBox(height: 3),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "No. Rek. : 0025 0113 0340 500",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Color.fromARGB(255, 204, 163, 41),
+                            fontSize: 15,
                           ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "Atas nama : Dina Nailul Muna",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontFamily: 'Dosis',
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "*Jika sudah membayar harap ",
+                        ),
+                        TextSpan(
+                          text: "KONFIRMASI",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text:
+                              " ke bendahara.",
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "Pembayaran bisa dilakukan secara non tunai/cashless via Bank BRI dengan ",
-                        style: TextStyle(
-                            // fontWeight: FontWeight.bold,
-                            // fontSize: 16,
-                            ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "No. : xxx",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            // fontSize: 16,
-                            ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "Atas nama : Dina Nailul Muna",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            // fontSize: 16,
-                            ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                  ],
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Text(
-                  "Jika sudah bayar, KONFIRMASI ke bendahara.",
-                  style: TextStyle(fontSize: 16),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
