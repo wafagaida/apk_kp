@@ -176,8 +176,8 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                                 DataCell(Text('${index + 1}')),
                                 DataCell(
                                   SizedBox(
-                                    width:
-                                        170,
+                                    // width:
+                                    //     170,
                                     child: Text(nilai.mapel?.namaMapel ?? ''),
                                   ),
                                 ),

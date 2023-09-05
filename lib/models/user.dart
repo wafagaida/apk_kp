@@ -13,6 +13,7 @@ class User {
   String? noTlp;
   String? tahunMasuk;
   String? password;
+  String? level;
   // List<Kelas>? kelas;
   Kelas? kelas;
 
@@ -29,6 +30,7 @@ class User {
       this.noTlp,
       this.tahunMasuk,
       this.password,
+      this.level,
       this.kelas});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,7 @@ class User {
     noTlp = json['no_tlp'];
     tahunMasuk = json['tahun_masuk'];
     password = json['password'];
+    level = json['level'];
     // if (json['kelas'] != null) {
     //   kelas = <Kelas>[];
     //   json['kelas'].forEach((v) {

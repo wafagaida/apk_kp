@@ -247,7 +247,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                             DataCell(Text('${index + 1}')),
                                             DataCell(
                                               SizedBox(
-                                                width: 170,
+                                                // width: 170,
                                                 child: Text(
                                                     nilai.mapel?.namaMapel ??
                                                         ''),

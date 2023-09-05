@@ -350,69 +350,69 @@ class _BayarScreenState extends State<BayarScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Column(
                           children: [
-                            if (bayarList.isEmpty)
-                              const Center(
-                                child: Text(
-                                  "Belum ada data riwayat pembayaran",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                            for (var bayar in _filterTransactionsBySemester(
+                                selectedSemester))
+                              if (bayarList.isEmpty ||
+                                  bayar.jumlahBayar == null)
+                                const Center(
+                                  child: Text(
+                                    "Belum ada data riwayat pembayaran",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              )
-                            else
-                              for (var bayar in _filterTransactionsBySemester(
-                                  selectedSemester))
-                                if (bayar.jumlahBayar != null &&
-                                    (selectedSemester == null ||
-                                        bayar.semester == selectedSemester))
-                                  Column(
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Image(
-                                              image: AssetImage(
-                                                  'assets/images/icis.png')),
-                                          const SizedBox(width: 5),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                bayar.namaBayar ??
-                                                    '', //nama_bayar
+                                )
+                              else if (bayar.jumlahBayar != null &&
+                                  (selectedSemester == null ||
+                                      bayar.semester == selectedSemester))
+                                Column(
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Image(
+                                            image: AssetImage(
+                                                'assets/images/icis.png')),
+                                        const SizedBox(width: 5),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              bayar.namaBayar ??
+                                                  '', //nama_bayar
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            Text("(${bayar.bulan})"),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Text(
+                                                'Rp. ${formatNumber(bayar.jumlahBayar ?? 0)}', //jumlah_bayar
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
                                                 ),
                                               ),
-                                              Text("(${bayar.bulan})"),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Text(
-                                                  'Rp. ${formatNumber(bayar.jumlahBayar ?? 0)}', //jumlah_bayar
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              Text(bayar.tglBayar ??
-                                                  ''), //tgl_bayar
-                                            ],
-                                          ),
-                                          const SizedBox(width: 10),
-                                        ],
-                                      ),
-                                      const Divider(thickness: 1),
-                                    ],
-                                  ),
+                                            ),
+                                            Text(bayar.tglBayar ??
+                                                ''), //tgl_bayar
+                                          ],
+                                        ),
+                                        const SizedBox(width: 10),
+                                      ],
+                                    ),
+                                    const Divider(thickness: 1),
+                                  ],
+                                ),
                           ],
                         ),
                       ),

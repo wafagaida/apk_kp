@@ -51,7 +51,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                   child: RichText(
                     text: const TextSpan(
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         color: Colors.black,
                         fontFamily: 'Dosis',
                       ),
@@ -151,7 +151,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
-                          "Pembayaran bisa dilakukan secara non tunai/cashless via Bank BRI dengan No. Rekening berikut: ",
+                          "Pembayaran bisa dilakukan secara non tunai/cashless via Bank BRI dengan No. Rekening sebagai berikut. ",
                           style: TextStyle(
                               // fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -192,7 +192,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                   child: RichText(
                     text: const TextSpan(
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         color: Colors.black,
                         fontFamily: 'Dosis',
                       ),
@@ -208,7 +208,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                         ),
                         TextSpan(
                           text:
-                              " ke bendahara.",
+                              " ke bagian keuangan.",
                         ),
                       ],
                     ),

@@ -72,6 +72,20 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: size.width * 0.2,
               ),
               const SizedBox(height: 10),
+              // const Text(
+              //   "S  I  R  A  J  A",
+              //   style: TextStyle(
+              //     fontSize: 31,
+              //     color: Colors.white,
+              //     fontWeight: FontWeight.w900,
+              //   ),
+              // ),
+              // const Divider(
+              //   height: 20,
+              //   color: Colors.white,
+              //   endIndent: 100,
+              //   indent: 100,
+              // ),
               const Text(
                 "Sistem Informasi Siswa",
                 style: TextStyle(
@@ -90,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 margin: EdgeInsets.symmetric(
                     vertical: 20,
-                    horizontal: MediaQuery.of(context).size.width/ 3.6),
+                    horizontal: MediaQuery.of(context).size.width / 3.6),
                 child: const LinearProgressIndicator(
                   color: Colors.white,
                   // valueColor: AlwaysStoppedAnimation(Colors.white),

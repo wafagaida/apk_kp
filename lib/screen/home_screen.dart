@@ -168,10 +168,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       accountName: const Text(
-        'SMK PLUS SUKARAJA',
+        'SIRAJA',
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 18,
+          fontSize: 20,
         ),
       ),
       accountEmail: Text(
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           iconColor: const Color(0xFF0873A1),
           content: const Text(
-              "Sistem Informasi SMK Plus Sukaraja merupakan aplikasi berbasis Mobile Apps yang mendukung dalam mendapat informasi sekolah."),
+              "SIRAJA merupakan Sistem Informasi Akademik Siswa SMK Plus Sukaraja berbasis Mobile Apps yang mendukung dalam mendapatkan informasi akademik yang disediakan oleh sekolah."),
           actions: [
             TextButton(
               onPressed: () {
