@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/routes/app_routes.dart';
-
-import '../network/api_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,10 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  Future<bool> checkIfUserIsLoggedIn() async {
-    var token = await Network().getToken(); // Await the Future value
-    return token != null && token.isNotEmpty;
-  }
+Future<bool> checkIfUserIsLoggedIn() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString('token');
+  return token != null && token.isNotEmpty;
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
       bottomNavigationBar: const Padding(
-        padding: EdgeInsets.only(bottom: 8.0),
+        padding: EdgeInsets.only(bottom: 12.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -45,9 +45,9 @@ class _LoginScreenState extends State<LoginScreen> {
     var body = json.decode(response.body);
 
     if (body["success"] == true) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('token', body['token']); // Save the token
-      pref.setString('user', json.encode(body['user']));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', body['token']);
+      prefs.setString('user', json.encode(body['user']));
 
       Future.delayed(
         const Duration(seconds: 1),
