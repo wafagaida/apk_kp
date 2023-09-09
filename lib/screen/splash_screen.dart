@@ -30,8 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
       () async {
         // Mark the callback as async
-        bool isLoggedIn =
-            await checkIfUserIsLoggedIn();
+        bool isLoggedIn = await checkIfUserIsLoggedIn();
 
         if (isLoggedIn) {
           GoRouter.of(context).goNamed(
@@ -113,6 +112,27 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.copyright_rounded,
+              color: Colors.white,
+              size: 15,
+            ),
+            SizedBox(width: 5),
+            Text(
+              "2023 SIRAJA",
+              style: TextStyle(
+                color: Colors.white,
+                // fontSize: 16,
+              ),
+            ),
+          ],
         ),
       ),
     );

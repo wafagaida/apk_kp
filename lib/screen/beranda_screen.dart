@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms/models/news.dart';
@@ -7,6 +8,7 @@ import 'package:lms/network/constants.dart';
 import 'package:lms/routes/app_routes.dart';
 import 'package:lms/screen/beranda_screen_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'home_fragment_widgets.dart';
@@ -166,8 +168,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
                               return Text(
                                   'Terjadi kesalahan: ${snapshot.error}');
                             } else {
-                              final List<News> newsList = snapshot.data ??
-                                  [];
+                              final List<News> newsList = snapshot.data ?? [];
 
                               if (newsList.isEmpty) {
                                 return const Text(
@@ -190,8 +191,19 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                           ),
                                           child: AspectRatio(
                                             aspectRatio: 1 / 1,
-                                            child: Image.network(
-                                              '$fotoUrl/${news.image}',
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  '$fotoUrl/${news.image}',
+                                              placeholder: (context, url) =>
+                                                  LoadingAnimationWidget.flickr(
+                                                      size: 30,
+                                                      leftDotColor: const Color(
+                                                          0xFF0873A1),
+                                                      rightDotColor:
+                                                          Colors.amber),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
                                               fit: BoxFit.cover,
                                             ),
                                           ),

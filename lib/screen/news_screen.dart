@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lms/network/constants.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../models/news.dart';
 
@@ -77,11 +78,12 @@ class _NewsScreenState extends State<NewsScreen> {
                 child: Column(
                   children: [
                     CachedNetworkImage(
-                      imageUrl:
-                          '$fotoUrl/${news.image}',
+                      imageUrl: '$fotoUrl/${news.image}',
                       placeholder: (context, url) =>
-                          const CircularProgressIndicator(valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
+                          LoadingAnimationWidget.flickr(
+                              size: 40,
+                              leftDotColor: const Color(0xFF0873A1),
+                              rightDotColor: Colors.amber),
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                     ),
