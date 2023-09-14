@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, duplicate_ignore
 
 import 'dart:convert';
 
@@ -98,7 +98,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                         AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return const Center(child: Text('Tidak Ada Koneksi Internet'));
             } else if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(
@@ -206,8 +206,17 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                     Align(
                                       alignment: Alignment.center,
                                       child: DataTable(
-                                        dataRowHeight: 30,
-                                        headingRowHeight: 35,
+                                        // ignore: deprecated_member_use
+                                        dataRowHeight: 38,
+                                        headingRowHeight: 45,
+                                        columnSpacing: 25,
+                                        border: const TableBorder(
+                                          verticalInside: BorderSide(
+                                              width: 1, color: Colors.black12),
+                                          top: BorderSide(
+                                              width: 1, color: Colors.black12),
+                                        ),
+                                        // columnSpacing: MediaQuery.of(context).size.width / (3 + 1),
                                         columns: const [
                                           DataColumn(
                                             label: Text(
@@ -222,6 +231,16 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                           DataColumn(
                                             label: Text(
                                               'Mata Pelajaran',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          DataColumn(
+                                            label: Text(
+                                              'KKM',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 16,
@@ -253,7 +272,32 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                                         ''),
                                               ),
                                             ),
-                                            DataCell(Text(nilai.nilai ?? '-')),
+                                            DataCell(
+                                                Text(nilai.mapel?.kkm ?? '-')),
+                                            DataCell(
+                                              Text(
+                                                nilai.nilai ?? '-',
+                                                style: TextStyle(
+                                                  color: (nilai.nilai != null &&
+                                                          double.tryParse(nilai
+                                                                  .nilai!) !=
+                                                              null &&
+                                                          double.tryParse(nilai
+                                                                      .mapel
+                                                                      ?.kkm ??
+                                                                  '0') !=
+                                                              null &&
+                                                          double.parse(nilai
+                                                                  .nilai!) <
+                                                              double.parse(nilai
+                                                                      .mapel
+                                                                      ?.kkm ??
+                                                                  '0'))
+                                                      ? Colors.red
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
                                           ]);
                                         }).toList(),
                                         showBottomBorder: true,

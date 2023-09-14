@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // ignore: unused_field
   bool _isLoading = false;
   String nama = '';
+  String jurusan = '';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final PageController _pageController = PageController();
 
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (user != null) {
       setState(() {
         nama = user['nama'];
+        jurusan = user['jurusan'];
       });
     }
   }
@@ -167,17 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 50,
         ),
       ),
-      accountName: const Text(
-        'SIRAJA',
-        style: TextStyle(
+      accountName: Text(
+        nama,
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 18,
         ),
       ),
       accountEmail: Text(
-        nama,
+        jurusan,
         style: const TextStyle(
-          fontStyle: FontStyle.italic,
+          // fontStyle: FontStyle.italic,
           fontSize: 16,
         ),
       ),
@@ -348,8 +350,8 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Yakin keluar?"),
-        content: const Text("Akun anda akan keluar dari aplikasi ini"),
+        title: const Text("Apakah anda yakin keluar dari aplikasi ini?"),
+        // content: const Text("Akun anda akan keluar dari aplikasi ini"),
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(

@@ -44,6 +44,8 @@ dependencies:
   provider: ^6.0.5
   cached_network_image: ^3.2.3
   intl: ^0.18.1
+  url_launcher: ^6.1.14
+  font_awesome_flutter: ^10.5.0
   # flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
@@ -109,6 +111,7 @@ flutter:
     - assets/images/tempat.png
     - assets/images/jam.png
     - assets/images/icis.png
+    - assets/images/menu.png
   
   fonts:
     - family: Dosis

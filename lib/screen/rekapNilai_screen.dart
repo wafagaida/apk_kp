@@ -90,7 +90,7 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                         AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))),
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return const Center(child: Text('Tidak Ada Koneksi Internet'));
             } else if (!snapshot.hasData) {
               return const Center(
                 child: CircularProgressIndicator(
@@ -135,8 +135,14 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                           alignment: Alignment.center,
                           child: DataTable(
                             // ignore: deprecated_member_use
-                            dataRowHeight: 30,
-                            headingRowHeight: 35,
+                            dataRowHeight: 38,
+                            headingRowHeight: 45,
+                            columnSpacing: 25,
+                            border: const TableBorder(
+                              verticalInside:
+                                  BorderSide(width: 1, color: Colors.black12),
+                              top: BorderSide(width: 1, color: Colors.black12),
+                            ),
                             // columnSpacing: MediaQuery.of(context).size.width / (3 + 1),
                             columns: const [
                               DataColumn(
@@ -152,6 +158,16 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                               DataColumn(
                                 label: Text(
                                   'Mata Pelajaran',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'KKM',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -181,7 +197,26 @@ class _RekapNilaiScreenState extends State<RekapNilaiScreen> {
                                     child: Text(nilai.mapel?.namaMapel ?? ''),
                                   ),
                                 ),
-                                DataCell(Text(nilai.nilai ?? '-')),
+                                DataCell(Text(nilai.mapel?.kkm ?? '-')),
+                                DataCell(
+                                  Text(
+                                    nilai.nilai ?? '-',
+                                    style: TextStyle(
+                                      color: (nilai.nilai != null &&
+                                              double.tryParse(nilai.nilai!) !=
+                                                  null &&
+                                              double.tryParse(
+                                                      nilai.mapel?.kkm ??
+                                                          '0') !=
+                                                  null &&
+                                              double.parse(nilai.nilai!) <
+                                                  double.parse(
+                                                      nilai.mapel?.kkm ?? '0'))
+                                          ? Colors.red
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
                               ]);
                             }).toList(),
                             showBottomBorder: true,

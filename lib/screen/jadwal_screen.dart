@@ -32,9 +32,8 @@ Future<List<Jadwal>> fetchData(String userKdKelas) async {
   }
 }
 
-
 class _JadwalScreenState extends State<JadwalScreen> {
-  String? userKdKelas; 
+  String? userKdKelas;
 
   @override
   void initState() {
@@ -164,7 +163,7 @@ class _JadwalScreenState extends State<JadwalScreen> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return const Center(child: Text('Tidak Ada Koneksi Internet'));
             }
             return const Center(
                 child: CircularProgressIndicator(

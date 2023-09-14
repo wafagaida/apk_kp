@@ -71,7 +71,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       valueColor:
                           AlwaysStoppedAnimation<Color>(Color(0xFF0873A1))));
             } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              return const Center(child: Text('Tidak Ada Koneksi Internet'));
             } else if (snapshot.hasData) {
               final News news = snapshot.data!;
               return SingleChildScrollView(

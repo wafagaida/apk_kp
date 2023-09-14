@@ -82,34 +82,43 @@ class _BerandaScreenState extends State<BerandaScreen> {
                 color: const Color(0xFF0873A1),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 35, top: 45, right: 35),
+                padding: const EdgeInsets.only(left: 25, top: 45, right: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        const Text(
-                          "Halo,",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        const CircleAvatar(
+                          backgroundImage:
+                              AssetImage("assets/images/logoSMK.png"),
                         ),
-                        Row(
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              nama,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            const Text(
+                              "Halo,",
+                              style: TextStyle(
                                 color: Colors.white,
+                                fontSize: 18,
                               ),
                             ),
-                            const SizedBox(width: 5),
-                            const Icon(
-                              Icons.waving_hand_rounded,
-                              color: Colors.yellowAccent,
+                            Row(
+                              children: [
+                                Text(
+                                  nama,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                const Icon(
+                                  Icons.waving_hand_rounded,
+                                  color: Colors.yellowAccent,
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -119,9 +128,10 @@ class _BerandaScreenState extends State<BerandaScreen> {
                       onTap: () {
                         homeScaffold.currentState!.openEndDrawer();
                       },
-                      child: const CircleAvatar(
-                        backgroundImage:
-                            AssetImage("assets/images/logoSMK.png"),
+                      child: SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: Image.asset('assets/images/menu.png'),
                       ),
                     ),
                   ],
@@ -135,13 +145,13 @@ class _BerandaScreenState extends State<BerandaScreen> {
                   children: [
                     const SizedBox(height: 25),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: BerandaWidget.cardMenu(),
                     ),
                     const SizedBox(height: 20),
                     const Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 35,
+                        horizontal: 25,
                       ),
                       child: Text(
                         "Pengumuman",
@@ -153,7 +163,7 @@ class _BerandaScreenState extends State<BerandaScreen> {
                     ),
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Center(
                         child: FutureBuilder<List<News>>(
                           future: fetchData(),
@@ -165,8 +175,8 @@ class _BerandaScreenState extends State<BerandaScreen> {
                                     Color(0xFF0873A1)),
                               );
                             } else if (snapshot.hasError) {
-                              return Text(
-                                  'Terjadi kesalahan: ${snapshot.error}');
+                              return const Center(
+                                  child: Text('Tidak Ada Koneksi Internet'));
                             } else {
                               final List<News> newsList = snapshot.data ?? [];
 

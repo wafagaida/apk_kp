@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "SISTEM INFORMASI SISWA",
+              "SISTEM INFORMASI AKADEMIK",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
@@ -171,6 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderSide: BorderSide.none,
                                   ),
                                 ),
+                                autofillHints: const [AutofillHints.username],
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Username Wajib Diisi';

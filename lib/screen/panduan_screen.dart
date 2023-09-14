@@ -1,5 +1,9 @@
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PanduanScreen extends StatefulWidget {
   const PanduanScreen({super.key});
@@ -44,6 +48,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // const SizedBox(height: 3),
                 Padding(
@@ -51,7 +56,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                   child: RichText(
                     text: const TextSpan(
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 16,
                         color: Colors.black,
                         fontFamily: 'Dosis',
                       ),
@@ -90,14 +95,14 @@ class _PanduanScreenState extends State<PanduanScreen> {
                           Icon(
                             CupertinoIcons.money_dollar_circle_fill,
                             color: Color.fromARGB(255, 39, 129, 86),
-                            size: 28,
+                            size: 26,
                           ),
                           SizedBox(width: 12),
                           Text(
                             "TUNAI / CASH",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 20,
                               color: Color.fromARGB(255, 39, 129, 86),
                             ),
                           ),
@@ -109,8 +114,8 @@ class _PanduanScreenState extends State<PanduanScreen> {
                         child: Text(
                           "Pembayaran bisa dilakukan secara tunai/cash di Kampus SMK Plus Sukaraja dengan membawa buku iuran yang telah disediakan.",
                           style: TextStyle(
-                              fontSize: 15,
-                              ),
+                            fontSize: 15,
+                          ),
                           textAlign: TextAlign.justify,
                         ),
                       ),
@@ -134,14 +139,14 @@ class _PanduanScreenState extends State<PanduanScreen> {
                           Icon(
                             CupertinoIcons.arrow_right_arrow_left_circle_fill,
                             color: Color.fromARGB(255, 204, 163, 41),
-                            size: 28,
+                            size: 26,
                           ),
                           SizedBox(width: 12),
                           Text(
                             "NON TUNAI / CASHLESS",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 20,
                               color: Color.fromARGB(255, 204, 163, 41),
                             ),
                           ),
@@ -153,9 +158,9 @@ class _PanduanScreenState extends State<PanduanScreen> {
                         child: Text(
                           "Pembayaran bisa dilakukan secara non tunai/cashless via Bank BRI dengan No. Rekening sebagai berikut. ",
                           style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              ),
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                           textAlign: TextAlign.justify,
                         ),
                       ),
@@ -192,7 +197,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                   child: RichText(
                     text: const TextSpan(
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 16,
                         color: Colors.black,
                         fontFamily: 'Dosis',
                       ),
@@ -208,11 +213,56 @@ class _PanduanScreenState extends State<PanduanScreen> {
                         ),
                         TextSpan(
                           text:
-                              " ke bagian keuangan.",
+                              " ke bagian keuangan dengan mengirimkan bukti pembayaran melalui kontak berikut.",
                         ),
                       ],
                     ),
                     textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      var noHp = '+6282214534862';
+                      var pesan = 'Assalamualaikum';
+                      var url = "https://wa.me/$noHp?text=$pesan";
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text("Tidak dapat membuka WhatsApp"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                      // minimumSize: const Size(500, 50),
+                      elevation: 4,
+                      backgroundColor: const Color(0xff128C7E),
+                      padding: const EdgeInsets.all(12)
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.whatsapp,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Dina Nailul Muna",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

@@ -87,9 +87,9 @@ Future<bool> checkIfUserIsLoggedIn() async {
               //   indent: 100,
               // ),
               const Text(
-                "Sistem Informasi Siswa",
+                "Sistem Informasi Akademik",
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
                 ),

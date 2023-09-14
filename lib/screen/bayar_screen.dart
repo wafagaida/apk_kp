@@ -49,39 +49,43 @@ class _BayarScreenState extends State<BayarScreen> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = pref.getString('user');
     var url = Uri.parse('$bayarUrl/$userNis');
-    final response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $user',
-      },
-    );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
-      setState(() {
-        bayarList = jsonResponse.map((data) => Bayar.fromJson(data)).toList();
-        isLoading = false;
-      });
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $user',
+        },
+      );
 
-      // Extract semester data from bayarList and populate semesterList
-      semesterList =
-          bayarList.map((bayar) => bayar.semester ?? '').toSet().toList();
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonResponse = jsonDecode(response.body)['data'];
+        setState(() {
+          bayarList = jsonResponse.map((data) => Bayar.fromJson(data)).toList();
+          isLoading = false;
+        });
 
-      _initializeExpansionTileItems();
-    } else {
-      throw Exception('Gagal Menampilkan Pembayaran');
+        semesterList =
+            bayarList.map((bayar) => bayar.semester ?? '').toSet().toList();
+
+        _initializeExpansionTileItems();
+      } else {
+        throw Exception('Gagal Menampilkan Pembayaran');
+      }
+    } catch (e) {
+      const Center(child: Text('Tidak Ada Koneksi Internet'));
     }
   }
 
   void _initializeExpansionTileItems() {
-    _expansionTileItems.clear(); // Clear existing items
+    _expansionTileItems.clear();
 
     if (selectedSemester != null) {
       final filteredTransactions =
           _filterTransactionsBySemester(selectedSemester!);
 
       final tableBody = DataTable(
-        columnSpacing: 45,
+        columnSpacing: 25,
         dataRowHeight: 30,
         headingRowHeight: 35,
         headingTextStyle: const TextStyle(
@@ -90,18 +94,15 @@ class _BayarScreenState extends State<BayarScreen> {
           fontFamily: 'Dosis',
           fontSize: 16,
         ),
-        // dataRowColor: MaterialStateColor.resolveWith((states) => Colors.white),
-        // border: const TableBorder(
-        //   bottom: BorderSide(color: Color(0xFF0873A1), width: 2),
-        //   horizontalInside: BorderSide(color: Color(0xFF0873A1), width: 2),
-        // ),
         columns: const [
           DataColumn(label: Text('No.')),
           DataColumn(label: Text('Keterangan')),
           DataColumn(label: Text('Nominal')),
         ],
-        rows: filteredTransactions.map<DataRow>((bayar) {
-          final index = filteredTransactions.indexOf(bayar);
+        rows: filteredTransactions.asMap().entries.map<DataRow>((entry) {
+          final index = entry.key;
+          final bayar = entry.value;
+          final tunggakan = bayar.nominal! - (bayar.jumlahBayar ?? 0);
 
           return DataRow(cells: [
             DataCell(Text('${index + 1}.')),
@@ -109,23 +110,21 @@ class _BayarScreenState extends State<BayarScreen> {
               children: [
                 Text(bayar.namaBayar ?? ''),
                 const SizedBox(width: 5),
-                Text("(${bayar.bulan})"),
+                Text("(${_formatMonth(bayar.bulan)})"),
               ],
             )),
             DataCell(Text(
-              'Rp. ${formatNumber(bayar.nominal ?? 0)}',
+              'Rp. ${formatNumber(tunggakan)}',
             )),
           ]);
         }).toList(),
         showBottomBorder: true,
       );
 
-      // final isExpanded = selectedSemester == semester;
-
       _expansionTileItems.add(
         ExpansionTile(
           title: Text(
-            'Lihat Detail Pembayaran Semester $selectedSemester',
+            'Lihat Rincian Tunggakan Semester $selectedSemester',
             style: const TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: 14,
@@ -133,7 +132,6 @@ class _BayarScreenState extends State<BayarScreen> {
             ),
             textAlign: TextAlign.right,
           ),
-          // textColor: const Color(0xFF0873A1),
           iconColor: Colors.black45,
           collapsedIconColor: Colors.black45,
           initiallyExpanded: false,
@@ -154,6 +152,28 @@ class _BayarScreenState extends State<BayarScreen> {
     } else {
       return bayarList.where((bayar) => bayar.semester == semester).toList();
     }
+  }
+
+  String _formatDate(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) {
+      return '';
+    }
+
+    final inputFormat = DateFormat('yyyy-MM-dd');
+    final outputFormat = DateFormat('dd-MM-yyyy');
+    final date = inputFormat.parse(dateStr);
+    return outputFormat.format(date);
+  }
+
+  String _formatMonth(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) {
+      return '';
+    }
+
+    final inputFormat = DateFormat('yyyy-MM');
+    final outputFormat = DateFormat('MMMM-yyyy');
+    final date = inputFormat.parse(dateStr);
+    return outputFormat.format(date);
   }
 
   double calculateOutstandingBalance(String? semester) {
@@ -286,47 +306,6 @@ class _BayarScreenState extends State<BayarScreen> {
                     ],
                   ),
                 ),
-                // Display paid transactions
-                // for (var bayar in bayarList)
-                // Card(
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(8.0),
-                //   ),
-                //   elevation: 3,
-                //   child: Column(
-                //     children: [
-                //       Container(
-                //         height: 35,
-                //         width: MediaQuery.of(context).size.width * 0.5,
-                //         padding: const EdgeInsets.only(top: 5, left: 12),
-                //         decoration: const BoxDecoration(
-                //           borderRadius: BorderRadius.only(
-                //             topLeft: Radius.circular(8),
-                //             topRight: Radius.circular(8),
-                //           ),
-                //           color: Colors.blueAccent,
-                //         ),
-                //         child: const Text(
-                //           "Lunas",
-                //           style: TextStyle(
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 18,
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       ),
-                //       const SizedBox(height: 8),
-                //       Text(
-                //         "Rp. ${bayar.jumlahBayar}",
-                //         style: TextStyle(
-                //           fontWeight: FontWeight.bold,
-                //           fontSize: 20,
-                //         ),
-                //       ),
-                //       const SizedBox(height: 8),
-                //     ],
-                //   ),
-                // ),
                 const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5),
@@ -388,7 +367,8 @@ class _BayarScreenState extends State<BayarScreen> {
                                                 fontSize: 18,
                                               ),
                                             ),
-                                            Text("(${bayar.bulan})"),
+                                            Text(
+                                                "(${_formatMonth(bayar.bulan)})"),
                                           ],
                                         ),
                                         const Spacer(),
@@ -403,8 +383,7 @@ class _BayarScreenState extends State<BayarScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Text(bayar.tglBayar ??
-                                                ''), //tgl_bayar
+                                            Text(_formatDate(bayar.tglBayar)),
                                           ],
                                         ),
                                         const SizedBox(width: 10),
