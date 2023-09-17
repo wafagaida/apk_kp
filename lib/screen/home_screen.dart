@@ -452,7 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Error saat logout: $error"),
+            title: const Text("Tidak Bisa Terhubung Ke Internet. Coba lagi"),
             actions: [
               ElevatedButton(
                 onPressed: () {

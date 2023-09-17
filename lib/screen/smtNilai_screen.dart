@@ -215,6 +215,10 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                               width: 1, color: Colors.black12),
                                           top: BorderSide(
                                               width: 1, color: Colors.black12),
+                                          left: BorderSide(
+                                              width: 1, color: Colors.black12),
+                                          right: BorderSide(
+                                              width: 1, color: Colors.black12),
                                         ),
                                         // columnSpacing: MediaQuery.of(context).size.width / (3 + 1),
                                         columns: const [
@@ -295,6 +299,7 @@ class _SmtNilaiScreenState extends State<SmtNilaiScreen> {
                                                                   '0'))
                                                       ? Colors.red
                                                       : Colors.black,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),

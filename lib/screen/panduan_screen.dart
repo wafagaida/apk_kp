@@ -213,7 +213,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                         ),
                         TextSpan(
                           text:
-                              " ke bagian keuangan dengan mengirimkan bukti pembayaran melalui kontak berikut.",
+                              " ke bagian keuangan dengan mengirimkan bukti pembayaran melalui kontak berikut :",
                         ),
                       ],
                     ),
@@ -245,7 +245,7 @@ class _PanduanScreenState extends State<PanduanScreen> {
                       // minimumSize: const Size(500, 50),
                       elevation: 4,
                       backgroundColor: const Color(0xff128C7E),
-                      padding: const EdgeInsets.all(12)
+                      padding: const EdgeInsets.all(10)
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,

@@ -171,7 +171,7 @@ class _BayarScreenState extends State<BayarScreen> {
     }
 
     final inputFormat = DateFormat('yyyy-MM');
-    final outputFormat = DateFormat('MMMM-yyyy');
+    final outputFormat = DateFormat('MMMM yyyy');
     final date = inputFormat.parse(dateStr);
     return outputFormat.format(date);
   }

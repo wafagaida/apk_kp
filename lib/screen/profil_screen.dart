@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
@@ -31,6 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isLoading = false;
       });
     }
+  }
+
+  String _formatDate(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) {
+      return '';
+    }
+
+    final inputFormat = DateFormat('yyyy-MM-dd');
+    final outputFormat = DateFormat('dd MMMM yyyy');
+    final date = inputFormat.parse(dateStr);
+    return outputFormat.format(date);
   }
 
   @override
@@ -91,8 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label:
-                                    Text(data?.nama ?? '-'),
+                                label: Text(data?.nama ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nama.png'),
                                 ),
@@ -115,8 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(data?.nis?.toString() ??
-                                    '-'),
+                                label: Text(data?.nis?.toString() ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nis.png'),
                                 ),
@@ -139,8 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label:
-                                    Text(data?.nik ?? '-'),
+                                label: Text(data?.nik ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/nis.png'),
                                 ),
@@ -163,8 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(
-                                    data?.tingkat ?? '-'),
+                                label: Text(data?.tingkat ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/kelas.png'),
                                 ),
@@ -187,8 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(
-                                    data?.jurusan ?? '-'),
+                                label: Text(data?.jurusan ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jurusan.png'),
                                 ),
@@ -211,8 +218,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(data?.jenisKelamin ??
-                                    '-'),
+                                label: Text(data?.jenisKelamin ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jk.png'),
                                 ),
@@ -235,8 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(data?.tanggalLahir ??
-                                    '-'),
+                                label: Text(_formatDate(data?.tanggalLahir ?? '-')),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/tl.png'),
                                 ),
@@ -259,8 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(
-                                    data?.alamat ?? '-'),
+                                label: Text(data?.alamat ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/alamat.png'),
                                 ),
@@ -283,8 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label:
-                                    Text(data?.noTlp ?? '-'),
+                                label: Text(data?.noTlp ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/noHp.png'),
                                 ),
@@ -307,8 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(
-                                    data?.tahunMasuk ?? '-'),
+                                label: Text(data?.tahunMasuk ?? '-'),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/jurusan.png'),
                                 ),
