@@ -155,7 +155,7 @@ class _BayarScreenState extends State<BayarScreen> {
   }
 
   String _formatDate(String? dateStr) {
-    if (dateStr == null || dateStr.isEmpty) {
+    if (dateStr == null || dateStr == '-' || dateStr.isEmpty) {
       return '';
     }
 
@@ -331,8 +331,7 @@ class _BayarScreenState extends State<BayarScreen> {
                           children: [
                             for (var bayar in _filterTransactionsBySemester(
                                 selectedSemester))
-                              if (bayarList.isEmpty ||
-                                  bayar.jumlahBayar == null)
+                              if (bayarList.isEmpty)
                                 const Center(
                                   child: Text(
                                     "Belum ada data riwayat pembayaran",
@@ -383,7 +382,8 @@ class _BayarScreenState extends State<BayarScreen> {
                                                 ),
                                               ),
                                             ),
-                                            Text(_formatDate(bayar.tglBayar)),
+                                            Text(_formatDate(
+                                                bayar.tglBayar ?? '-')),
                                           ],
                                         ),
                                         const SizedBox(width: 10),

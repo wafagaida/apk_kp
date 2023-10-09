@@ -35,8 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   String _formatDate(String? dateStr) {
-    if (dateStr == null || dateStr.isEmpty) {
-      return '';
+    if (dateStr == null || dateStr == '-' || dateStr.isEmpty) {
+      return '-';
     }
 
     final inputFormat = DateFormat('yyyy-MM-dd');
@@ -241,7 +241,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               readOnly: true,
                               decoration: InputDecoration(
                                 isDense: true,
-                                label: Text(_formatDate(data?.tanggalLahir ?? '-')),
+                                label: Text(
+                                    _formatDate(data?.tanggalLahir ?? '-')),
                                 prefixIcon: const ImageIcon(
                                   AssetImage('assets/images/tl.png'),
                                 ),
